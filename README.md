@@ -1,6 +1,6 @@
 ## Setting Environment
 
-Create a ```bash .env ``` file and write following:
+Create a ```.env ``` file and write following:
 
 ```bash
 
