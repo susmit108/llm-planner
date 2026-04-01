@@ -1,12 +1,6 @@
-import os
-import json
+from utils import *
 from rules import Rules
 from persona import UserHealthProfile
-from langchain_core.documents import Document
-from langchain_community.vectorstores import FAISS
-from langchain_huggingface import HuggingFaceEmbeddings
-from langchain_groq import ChatGroq
-from dotenv import load_dotenv
 
 load_dotenv()  
 api_key = os.getenv('GROQ_API_KEY')

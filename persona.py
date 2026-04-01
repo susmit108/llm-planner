@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field
+from utils import *
 
 class UserHealthProfile(BaseModel):
     Age: int = Field(default=-1)

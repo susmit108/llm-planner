@@ -1,4 +1,4 @@
-import json
+from utils import *
 
 empty_dict = {}
 

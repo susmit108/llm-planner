@@ -1,4 +1,4 @@
-import json
+from utils import *
 from rules import Rules
 with open('task.json','r') as f:
     task = json.load(f)

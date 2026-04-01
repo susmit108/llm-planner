@@ -1,2 +1,9 @@
 .env
 *.txt
+__pycache__/
+.venv/
+artifacts/medqa_graph/
+.codex
+.codex/
+.hf_cache
+.hf_cache/
