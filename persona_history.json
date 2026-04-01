@@ -1,0 +1,92 @@
+[
+    {
+        "Age": 29,
+        "Weight": 93.0,
+        "Average_Sleeping_Hours": 5.0,
+        "Has_Diabetes": 1,
+        "Has_High_Blood_Pressure": 1,
+        "Daily_Exercise": 0,
+        "__timestamp__": "2026-04-01T08:34:56"
+    },
+    {
+        "Age": 29,
+        "Weight": 93.0,
+        "Average_Sleeping_Hours": 5.0,
+        "Has_Diabetes": 1,
+        "Has_High_Blood_Pressure": 1,
+        "Daily_Exercise": 0,
+        "__timestamp__": "2026-04-01T08:35:19"
+    },
+    {
+        "Age": 29,
+        "Weight": 93.0,
+        "Average_Sleeping_Hours": 5.0,
+        "Has_Diabetes": 1,
+        "Has_High_Blood_Pressure": 1,
+        "Daily_Exercise": 0,
+        "__timestamp__": "2026-04-01T08:35:42"
+    },
+    {
+        "Age": 29,
+        "Weight": 93.0,
+        "Average_Sleeping_Hours": 5.0,
+        "Has_Diabetes": 1,
+        "Has_High_Blood_Pressure": 1,
+        "Daily_Exercise": 0,
+        "__timestamp__": "2026-04-01T08:36:04"
+    },
+    {
+        "Age": 29,
+        "Weight": -1.0,
+        "Average_Sleeping_Hours": -1.0,
+        "Has_Diabetes": -1,
+        "Has_High_Blood_Pressure": -1,
+        "Daily_Exercise": -1,
+        "__timestamp__": "2026-04-01T08:40:52"
+    },
+    {
+        "Age": 29,
+        "Weight": -1.0,
+        "Average_Sleeping_Hours": -1.0,
+        "Has_Diabetes": 0,
+        "Has_High_Blood_Pressure": -1,
+        "Daily_Exercise": -1,
+        "__timestamp__": "2026-04-01T08:42:07"
+    },
+    {
+        "Age": 30,
+        "Weight": -1.0,
+        "Average_Sleeping_Hours": -1.0,
+        "Has_Diabetes": 0,
+        "Has_High_Blood_Pressure": -1,
+        "Daily_Exercise": -1,
+        "__timestamp__": "2026-04-01T08:42:52"
+    },
+    {
+        "Age": 30,
+        "Weight": -1.0,
+        "Average_Sleeping_Hours": -1.0,
+        "Has_Diabetes": 0,
+        "Has_High_Blood_Pressure": -1,
+        "Daily_Exercise": -1,
+        "__timestamp__": "2026-04-01T08:42:52"
+    },
+    {
+        "Age": 30,
+        "Weight": -1.0,
+        "Average_Sleeping_Hours": -1.0,
+        "Has_Diabetes": 0,
+        "Has_High_Blood_Pressure": -1,
+        "Daily_Exercise": -1,
+        "__timestamp__": "2026-04-01T08:43:38"
+    },
+    {
+        "Age": 30,
+        "Weight": -1.0,
+        "Average_Sleeping_Hours": -1.0,
+        "Has_Diabetes": 1,
+        "Has_High_Blood_Pressure": -1,
+        "Daily_Exercise": -1,
+        "__timestamp__": "2026-04-01T08:44:24"
+    }
+]

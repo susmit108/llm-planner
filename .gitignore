@@ -1,2 +1,5 @@
 .env
 *.txt
+.venv/
+artifacts/
+__pycache__/
