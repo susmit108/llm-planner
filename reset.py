@@ -1,24 +1,44 @@
+"""
+reset.py
+--------
+Resets all session state files to their initial empty values.
+Run this between patients or when you want a clean slate.
+"""
+
 import json
 
-empty_dict = {}
+PERSONA_DEFAULT = {
+    "Age": -1,
+    "Weight": -1,
+    "Average_Sleeping_Hours": -1,
+    "Has_Diabetes": -1,
+    "Has_High_Blood_Pressure": -1,
+    "Daily_Exercise": -1,
+    "Height_cm": -1,
+    "BMI": -1,
+    "Glycated_Hemoglobin": -1,
+    "Blood_Pressure_Systolic": -1,
+    "Blood_Pressure_Diastolic": -1,
+    "HDL": -1,
+    "LDL": -1,
+    "Framingham_Score": -1,
+    "Abdominal_Circumference_cm": -1,
+    "Stress_Level": -1,
+    "Diet_Quality": -1,
+    "Smokes": -1,
+    "Alcohol_Consumption": -1,
+}
 
-with open('task.json', 'w') as f:
-    json.dump(empty_dict, f, indent=4)
+with open("persona.json", "w") as f:
+    json.dump(PERSONA_DEFAULT, f, indent=4)
 
-with open('persona.json', 'r') as f:
-    d = json.load(f)
+with open("conversation.json", "w") as f:
+    json.dump({"Conversation": {}}, f, indent=4)
 
-for k in list(d.keys()):
-    d[k] = -1
+with open("task.json", "w") as f:
+    json.dump({}, f, indent=4)
 
-with open('persona.json', 'w') as f:
-    json.dump(d, f, indent=4)
+with open("persona_history.json", "w") as f:
+    json.dump([], f, indent=4)
 
-with open('conversation.json', 'r') as f:
-    d = json.load(f)
-
-d['Conversation'] = empty_dict
-
-with open('conversation.json', 'w') as f:
-    json.dump(d, f, indent=4)
-
+print("All session state files reset to defaults.")

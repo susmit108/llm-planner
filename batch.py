@@ -1,3 +1,28 @@
+"""
+batch.py
+--------
+Batch runner for the integrated MarIA + LLM Planner system.
+
+Original behaviour (llm-planner) preserved exactly:
+  - Reads a .txt file of conversation entries (one per line)
+  - Per entry: appends to conversation.json → write_attr.py → generate_task.py
+  - Logs persona state + task list after each entry
+  - Supports --start (resume) and --delay (rate limit)
+
+Extended for Maria integration:
+  - Also runs Maria's full agentic loop on each entry
+  - Maria's reply is logged (tool calls are executed inline — measurements,
+    alarms, appointments, food data, proactive messages all fire)
+  - Maria's reply is injected back into conversation.json so write_attr.py
+    can also learn from what Maria said
+  - Tool call side-effects are summarised in the log per entry
+  - Final summary includes recorded actions alongside tasks
+
+Usage:
+    python batch.py --file conversations.txt --delay 1.0
+    python batch.py --file conversations.txt --start 5   # resume from line 5
+    python batch.py --file conversations.txt --no-maria  # planner-only mode
+"""
 
 import os
 import json
@@ -6,8 +31,11 @@ import argparse
 import subprocess
 from datetime import datetime
 from pathlib import Path
+from dotenv import load_dotenv
 
-# ── file paths (same as the rest of the project) ──────────────────────────────
+load_dotenv()
+
+# ── File paths (llm-planner convention, unchanged) ────────────────────────────
 CONV_FILE    = "conversation.json"
 TASK_FILE    = "task.json"
 PERSONA_FILE = "persona.json"
@@ -16,17 +44,17 @@ LOG_FILE     = "batch_run.log"
 SEPARATOR = "─" * 70
 
 
-# ── helpers ───────────────────────────────────────────────────────────────────
+# ── Logging helper (unchanged from original) ──────────────────────────────────
 
 def log(msg: str, log_fh):
-    """Print to stdout and write to log file simultaneously."""
     print(msg)
     log_fh.write(msg + "\n")
     log_fh.flush()
 
 
-def add_conversation_record(text: str):
-    """Append a new entry to conversation.json."""
+# ── Conversation helpers (unchanged from original) ────────────────────────────
+
+def add_conversation_record(text: str) -> str:
     with open(CONV_FILE, "r") as f:
         data = json.load(f)
     convo = data["Conversation"]
@@ -37,35 +65,31 @@ def add_conversation_record(text: str):
     return new_id
 
 
-def run_write_attr() -> bool:
-    """Run write_attr.py (persona extraction). Returns True on success."""
-    result = subprocess.run(
-        ["python", "write_attr.py"],
-        capture_output=True, text=True
-    )
+# ── Pipeline subprocess runners (unchanged from original) ────────────────────
+
+def run_write_attr():
+    result = subprocess.run(["python", "write_attr.py"], capture_output=True, text=True)
     if result.returncode != 0:
         return False, result.stderr.strip()
     return True, result.stdout.strip()
 
 
-def run_generate_task() -> bool:
-    """Run generate_task.py (rules + LLM suggestions). Returns True on success."""
-    result = subprocess.run(
-        ["python", "generate_task.py"],
-        capture_output=True, text=True
-    )
+def run_generate_task():
+    result = subprocess.run(["python", "generate_task.py"], capture_output=True, text=True)
     if result.returncode != 0:
         return False, result.stderr.strip()
     return True, result.stdout.strip()
 
+
+# ── State loaders (unchanged from original) ───────────────────────────────────
 
 def load_tasks() -> dict:
-    with open(TASK_FILE, "r") as f:
+    with open(TASK_FILE) as f:
         return json.load(f)
 
 
 def load_persona() -> dict:
-    with open(PERSONA_FILE, "r") as f:
+    with open(PERSONA_FILE) as f:
         return json.load(f)
 
 
@@ -83,15 +107,59 @@ def format_tasks(tasks: dict) -> str:
         return "  (none)"
     lines = []
     for k, v in tasks.items():
-        tag = "[LLM] " if v.startswith("[LLM]") else "[RULE]"
+        tag = "[LLM]" if v.startswith("[LLM]") else "[RULE]"
         label = v.removeprefix("[LLM] ")
         lines.append(f"  {k}. {tag} {label}")
     return "\n".join(lines)
 
 
-# ── main batch loop ───────────────────────────────────────────────────────────
+# ── Maria integration helpers (new) ───────────────────────────────────────────
 
-def run_batch(input_file: str, start_line: int = 1, delay: float = 0):
+def get_maria_agent():
+    """Lazy-load the Maria agent (avoids import at module level for --no-maria mode)."""
+    from groq import Groq
+    from agents.maria import Maria
+    client = Groq(api_key=os.getenv("GROQ_API_KEY"))
+    return Maria(client=client)
+
+
+def build_extra_context() -> str:
+    """Build the persona+task context string injected into Maria's system prompt."""
+    persona = load_persona()
+    tasks = load_tasks()
+    known = {k: v for k, v in persona.items() if v not in (-1, None, "") and not k.startswith("__")}
+    persona_lines = "\n".join(f"  {k}: {v}" for k, v in known.items()) or "  (no data yet)"
+    task_lines = "\n".join(f"  {k}. {v}" for k, v in tasks.items()) or "  (no tasks yet)"
+    return (
+        f"EXTRACTED HEALTH PROFILE:\n{persona_lines}\n\n"
+        f"CURRENT CARE TASKS:\n{task_lines}"
+    )
+
+
+def format_actions(store: dict) -> str:
+    """Format the in-memory action store into a readable summary."""
+    lines = []
+    for category, records in store.items():
+        if records:
+            lines.append(f"  [{category.upper()}]")
+            for r in records:
+                if category == "measurements":
+                    lines.append(f"    • {r['type']}: {r.get('value') or r.get('text_value')}")
+                elif category == "alarms":
+                    lines.append(f"    • {r['description']} — {r['date']} {r['time']}")
+                elif category == "appointments":
+                    label = r.get("doctor_name") or r.get("exam") or r["type"]
+                    lines.append(f"    • {label} on {r['date']}")
+                elif category == "food_data":
+                    lines.append(f"    • [{r['type']}] {r['value']}")
+                elif category == "proactive_messages":
+                    lines.append(f"    • {r['description']} ({r['theme']}, {r['relevance']})")
+    return "\n".join(lines) if lines else "  (none)"
+
+
+# ── Main batch loop ───────────────────────────────────────────────────────────
+
+def run_batch(input_file: str, start_line: int = 1, delay: float = 0, no_maria: bool = False):
     input_path = Path(input_file)
     if not input_path.exists():
         print(f"ERROR: File not found: {input_file}")
@@ -100,10 +168,20 @@ def run_batch(input_file: str, start_line: int = 1, delay: float = 0):
     lines = [l.strip() for l in input_path.read_text().splitlines() if l.strip()]
     total = len(lines)
 
+    # Initialise Maria once (maintains thread state across all entries)
+    maria = None
+    if not no_maria:
+        try:
+            maria = get_maria_agent()
+        except Exception as e:
+            print(f"WARNING: Could not initialise Maria agent ({e}). Running in planner-only mode.")
+            no_maria = True
+
     with open(LOG_FILE, "w") as log_fh:
-        log(f"LLM Planner — Batch Run", log_fh)
+        log("MarIA + LLM Planner — Batch Run", log_fh)
         log(f"Started : {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}", log_fh)
         log(f"File    : {input_file}  ({total} entries)", log_fh)
+        log(f"Mode    : {'planner-only (--no-maria)' if no_maria else 'full (Maria + planner)'}", log_fh)
         log(f"Starting from line {start_line}", log_fh)
         log(SEPARATOR, log_fh)
 
@@ -112,13 +190,42 @@ def run_batch(input_file: str, start_line: int = 1, delay: float = 0):
                 continue
 
             log(f"\n[Entry {idx}/{total}]", log_fh)
-            log(f"  Conversation: \"{line}\"", log_fh)
+            log(f"  User: \"{line}\"", log_fh)
 
-            # 1. Append to conversation store
+            # ── Step 1: Append user message to conversation.json ──────────────
             record_id = add_conversation_record(line)
             log(f"  → Saved as record #{record_id}", log_fh)
 
-            # 2. Extract persona attributes
+            # ── Step 2: Run Maria's agentic loop (new) ────────────────────────
+            if not no_maria:
+                try:
+                    from business.action_business import get_memory_store, clear_memory_store
+                    # Clear per-entry so we only log THIS turn's actions
+                    clear_memory_store()
+
+                    extra_context = build_extra_context()
+                    maria_reply = maria.run(
+                        content=line,
+                        user_id=0,  # single-user batch mode
+                        extra_context=extra_context,
+                    )
+                    log(f"  Maria: \"{maria_reply[:200]}{'...' if len(maria_reply) > 200 else ''}\"", log_fh)
+
+                    # Log any tool call side-effects that fired
+                    store = get_memory_store()
+                    actions_summary = format_actions(store)
+                    if actions_summary.strip() != "(none)":
+                        log("  🔧 Tool calls executed:", log_fh)
+                        log(actions_summary, log_fh)
+
+                    # Append Maria's reply to conversation.json too —
+                    # write_attr.py can then learn from what Maria said
+                    add_conversation_record(f"[MarIA]: {maria_reply}")
+
+                except Exception as e:
+                    log(f"  ✗ Maria error: {e}", log_fh)
+
+            # ── Step 3: Extract persona attributes (unchanged) ────────────────
             log("  → Running write_attr.py ...", log_fh)
             ok, out = run_write_attr()
             if not ok:
@@ -126,7 +233,7 @@ def run_batch(input_file: str, start_line: int = 1, delay: float = 0):
                 continue
             log("  ✓ Persona updated", log_fh)
 
-            # 3. Generate tasks (rules + LLM)
+            # ── Step 4: Generate tasks — rules + LLM (unchanged) ─────────────
             log("  → Running generate_task.py ...", log_fh)
             ok, out = run_generate_task()
             if not ok:
@@ -134,7 +241,7 @@ def run_batch(input_file: str, start_line: int = 1, delay: float = 0):
                 continue
             log("  ✓ Tasks generated", log_fh)
 
-            # 4. Print current state snapshot
+            # ── Step 5: Snapshot (unchanged) ──────────────────────────────────
             persona = load_persona()
             tasks   = load_tasks()
 
@@ -149,10 +256,10 @@ def run_batch(input_file: str, start_line: int = 1, delay: float = 0):
             if delay > 0 and idx < total:
                 time.sleep(delay)
 
+        # ── Final summary ──────────────────────────────────────────────────────
         log(f"\nBatch complete. {total - start_line + 1} entries processed.", log_fh)
         log(f"Log saved to: {LOG_FILE}", log_fh)
 
-        # Final summary
         log("\n" + SEPARATOR, log_fh)
         log("FINAL TASK LIST", log_fh)
         log(SEPARATOR, log_fh)
@@ -168,16 +275,21 @@ def run_batch(input_file: str, start_line: int = 1, delay: float = 0):
         for k, v in llm_tasks.items():
             log(f"  {k}. {v.removeprefix('[LLM] ')}", log_fh)
 
+        log("\n" + SEPARATOR, log_fh)
+        log("FINAL PERSONA", log_fh)
+        log(SEPARATOR, log_fh)
+        log(format_persona(load_persona()), log_fh)
 
-# ── CLI ───────────────────────────────────────────────────────────────────────
+
+# ── CLI (original args preserved + --no-maria added) ─────────────────────────
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
-        description="Run llm-planner pipeline on a text file of conversation entries."
+        description="Run MarIA + LLM Planner pipeline on a text file of conversation entries."
     )
     parser.add_argument(
         "--file", default="conversations.txt",
-        help="Path to the input text file (one conversation entry per line)."
+        help="Path to input .txt file (one patient message per line)."
     )
     parser.add_argument(
         "--start", type=int, default=1,
@@ -187,5 +299,14 @@ if __name__ == "__main__":
         "--delay", type=float, default=1.0,
         help="Seconds to wait between entries (helps with API rate limits). Default: 1."
     )
+    parser.add_argument(
+        "--no-maria", action="store_true",
+        help="Skip Maria's agentic loop — run planner pipeline only (original llm-planner behaviour)."
+    )
     args = parser.parse_args()
-    run_batch(input_file=args.file, start_line=args.start, delay=args.delay)
+    run_batch(
+        input_file=args.file,
+        start_line=args.start,
+        delay=args.delay,
+        no_maria=args.no_maria,
+    )

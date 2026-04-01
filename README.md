@@ -5,6 +5,7 @@ Create a ```.env ``` file and write following:
 ```bash
 
 GROQ_API_KEY = "your grok api key"
+GROQ_MODEL = "your Groq model name"
 
 ```
 
@@ -28,4 +29,3 @@ To start conversation:
 streamlit run app.py
 
 ```
-
