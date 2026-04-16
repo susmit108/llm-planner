@@ -41,4 +41,23 @@ with open("task.json", "w") as f:
 with open("persona_history.json", "w") as f:
     json.dump([], f, indent=4)
 
+with open("diagnosis_memory.json", "w") as f:
+    json.dump(
+        {
+            "patient_messages": [],
+            "symptoms_raw": [],
+            "symptoms_normalized": [],
+            "unmatched_symptoms": [],
+            "candidate_diseases": [],
+            "recommended_tasks": [],
+            "metadata": {
+                "updated_at": None,
+                "patient_message_count": 0,
+                "extractor": "lightweight-kiddi-adapter",
+            },
+        },
+        f,
+        indent=4,
+    )
+
 print("All session state files reset to defaults.")

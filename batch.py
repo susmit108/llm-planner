@@ -5,7 +5,7 @@ Batch runner for the integrated MarIA + LLM Planner system.
 
 Original behaviour (llm-planner) preserved exactly:
   - Reads a .txt file of conversation entries (one per line)
-  - Per entry: appends to conversation.json → write_attr.py → generate_task.py
+  - Per entry: appends to conversation.json → write_attr.py → diagnosis_memory.py → generate_task.py
   - Logs persona state + task list after each entry
   - Supports --start (resume) and --delay (rate limit)
 
@@ -32,6 +32,7 @@ import subprocess
 from datetime import datetime
 from pathlib import Path
 from dotenv import load_dotenv
+from diagnosis_memory import format_diagnosis_context, load_diagnosis_memory
 
 load_dotenv()
 
@@ -39,6 +40,7 @@ load_dotenv()
 CONV_FILE    = "conversation.json"
 TASK_FILE    = "task.json"
 PERSONA_FILE = "persona.json"
+DIAGNOSIS_MEMORY_FILE = "diagnosis_memory.json"
 LOG_FILE     = "batch_run.log"
 
 SEPARATOR = "─" * 70
@@ -74,6 +76,13 @@ def run_write_attr():
     return True, result.stdout.strip()
 
 
+def run_diagnosis_memory():
+    result = subprocess.run(["python", "diagnosis_memory.py"], capture_output=True, text=True)
+    if result.returncode != 0:
+        return False, result.stderr.strip()
+    return True, result.stdout.strip()
+
+
 def run_generate_task():
     result = subprocess.run(["python", "generate_task.py"], capture_output=True, text=True)
     if result.returncode != 0:
@@ -93,6 +102,13 @@ def load_persona() -> dict:
         return json.load(f)
 
 
+def load_diagnosis() -> dict:
+    if not os.path.exists(DIAGNOSIS_MEMORY_FILE):
+        return {}
+    with open(DIAGNOSIS_MEMORY_FILE) as f:
+        return json.load(f)
+
+
 def format_persona(persona: dict) -> str:
     lines = []
     for k, v in persona.items():
@@ -107,8 +123,15 @@ def format_tasks(tasks: dict) -> str:
         return "  (none)"
     lines = []
     for k, v in tasks.items():
-        tag = "[LLM]" if v.startswith("[LLM]") else "[RULE]"
-        label = v.removeprefix("[LLM] ")
+        if v.startswith("[LLM]"):
+            tag = "[LLM]"
+            label = v.removeprefix("[LLM] ")
+        elif v.startswith("[DX]"):
+            tag = "[DX]"
+            label = v.removeprefix("[DX] ")
+        else:
+            tag = "[RULE]"
+            label = v
         lines.append(f"  {k}. {tag} {label}")
     return "\n".join(lines)
 
@@ -127,11 +150,13 @@ def build_extra_context() -> str:
     """Build the persona+task context string injected into Maria's system prompt."""
     persona = load_persona()
     tasks = load_tasks()
+    diagnosis_memory = load_diagnosis_memory()
     known = {k: v for k, v in persona.items() if v not in (-1, None, "") and not k.startswith("__")}
     persona_lines = "\n".join(f"  {k}: {v}" for k, v in known.items()) or "  (no data yet)"
     task_lines = "\n".join(f"  {k}. {v}" for k, v in tasks.items()) or "  (no tasks yet)"
     return (
         f"EXTRACTED HEALTH PROFILE:\n{persona_lines}\n\n"
+        f"{format_diagnosis_context(diagnosis_memory)}\n\n"
         f"CURRENT CARE TASKS:\n{task_lines}"
     )
 
@@ -197,6 +222,20 @@ def run_batch(input_file: str, start_line: int = 1, delay: float = 0, no_maria: 
             log(f"  → Saved as record #{record_id}", log_fh)
 
             # ── Step 2: Run Maria's agentic loop (new) ────────────────────────
+            log("  → Running write_attr.py ...", log_fh)
+            ok, out = run_write_attr()
+            if not ok:
+                log(f"  ✗ write_attr.py failed:\n{out}", log_fh)
+                continue
+            log("  ✓ Persona updated", log_fh)
+
+            log("  → Running diagnosis_memory.py ...", log_fh)
+            ok, out = run_diagnosis_memory()
+            if not ok:
+                log(f"  ✗ diagnosis_memory.py failed:\n{out}", log_fh)
+                continue
+            log("  ✓ Diagnosis memory updated", log_fh)
+
             if not no_maria:
                 try:
                     from business.action_business import get_memory_store, clear_memory_store
@@ -225,15 +264,7 @@ def run_batch(input_file: str, start_line: int = 1, delay: float = 0, no_maria: 
                 except Exception as e:
                     log(f"  ✗ Maria error: {e}", log_fh)
 
-            # ── Step 3: Extract persona attributes (unchanged) ────────────────
-            log("  → Running write_attr.py ...", log_fh)
-            ok, out = run_write_attr()
-            if not ok:
-                log(f"  ✗ write_attr.py failed:\n{out}", log_fh)
-                continue
-            log("  ✓ Persona updated", log_fh)
-
-            # ── Step 4: Generate tasks — rules + LLM (unchanged) ─────────────
+            # ── Step 3: Generate tasks — rules + diagnosis + LLM ─────────────
             log("  → Running generate_task.py ...", log_fh)
             ok, out = run_generate_task()
             if not ok:
@@ -241,12 +272,26 @@ def run_batch(input_file: str, start_line: int = 1, delay: float = 0, no_maria: 
                 continue
             log("  ✓ Tasks generated", log_fh)
 
-            # ── Step 5: Snapshot (unchanged) ──────────────────────────────────
+            # ── Step 4: Snapshot ───────────────────────────────────────────────
             persona = load_persona()
-            tasks   = load_tasks()
+            diagnosis = load_diagnosis()
+            tasks = load_tasks()
 
             log("\n  📋 Persona state:", log_fh)
             log(format_persona(persona), log_fh)
+
+            symptoms = diagnosis.get("symptoms_normalized", [])
+            diseases = diagnosis.get("candidate_diseases", [])
+            if symptoms or diseases:
+                log("\n  🧠 Diagnosis memory:", log_fh)
+                log(f"  Symptoms: {', '.join(symptoms) if symptoms else '(none)'}", log_fh)
+                if diseases:
+                    for item in diseases:
+                        log(
+                            f"  Disease hypothesis: {item['name']} "
+                            f"({item['probability']:.0%})",
+                            log_fh,
+                        )
 
             log("\n  ✅ Current task list:", log_fh)
             log(format_tasks(tasks), log_fh)
@@ -264,12 +309,20 @@ def run_batch(input_file: str, start_line: int = 1, delay: float = 0, no_maria: 
         log("FINAL TASK LIST", log_fh)
         log(SEPARATOR, log_fh)
         final_tasks = load_tasks()
-        rule_tasks = {k: v for k, v in final_tasks.items() if not v.startswith("[LLM]")}
+        rule_tasks = {
+            k: v for k, v in final_tasks.items()
+            if not v.startswith("[LLM]") and not v.startswith("[DX]")
+        }
+        diagnosis_tasks = {k: v for k, v in final_tasks.items() if v.startswith("[DX]")}
         llm_tasks  = {k: v for k, v in final_tasks.items() if v.startswith("[LLM]")}
 
         log(f"\nRule-based ({len(rule_tasks)}):", log_fh)
         for k, v in rule_tasks.items():
             log(f"  {k}. {v}", log_fh)
+
+        log(f"\nDiagnosis-informed ({len(diagnosis_tasks)}):", log_fh)
+        for k, v in diagnosis_tasks.items():
+            log(f"  {k}. {v.removeprefix('[DX] ')}", log_fh)
 
         log(f"\nLLM-suggested ({len(llm_tasks)}):", log_fh)
         for k, v in llm_tasks.items():

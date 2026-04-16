@@ -18,6 +18,7 @@ from datetime import datetime
 from groq import Groq
 from dotenv import load_dotenv
 from config import get_groq_model
+from diagnosis_memory import load_diagnosis_memory
 
 load_dotenv()
 
@@ -80,6 +81,7 @@ def build_state_delta(history: list[dict]) -> str:
 
 def suggest_tasks_via_llm(persona, conversation, existing_tasks, history, n_suggestions=1):
     client = Groq(api_key=os.getenv("GROQ_API_KEY"))
+    diagnosis_memory = load_diagnosis_memory()
 
     persona_str = json.dumps({k: v for k, v in persona.items() if not k.startswith("__")}, indent=2)
     conv_entries = list(conversation.get("Conversation", {}).values())
@@ -87,13 +89,16 @@ def suggest_tasks_via_llm(persona, conversation, existing_tasks, history, n_sugg
     existing_tasks_str = "\n".join(f"  - {v}" for v in existing_tasks.values()) or "None yet."
     rules_str = "\n".join(f"  - {r}" for r in EXISTING_RULE_DESCRIPTIONS)
     delta_str = build_state_delta(history)
+    diagnosis_str = json.dumps(diagnosis_memory, indent=2)
 
     system_prompt = (
         "You are a proactive medical and lifestyle planning assistant working alongside MarIA, "
         "a clinical health chatbot. Deterministic rules already cover common patterns. "
         "Your job is to detect non-obvious, cross-domain clinical signals in the conversation "
         "history and health attribute trends, then suggest personalised actionable tasks that "
-        "the rules would miss. Be clinically accurate, specific, and kind."
+        "the rules would miss. Be clinically accurate, specific, and kind. "
+        "Diagnosis memory contains symptom-derived hypotheses only, so treat it as weak evidence "
+        "to ground suggestions, not as a confirmed diagnosis."
     )
 
     user_prompt = f"""
@@ -112,6 +117,9 @@ def suggest_tasks_via_llm(persona, conversation, existing_tasks, history, n_sugg
 === CLINICAL ATTRIBUTE TRENDS ===
 {delta_str}
 
+=== DIAGNOSIS MEMORY (HYPOTHESES, NOT CONFIRMED FACTS) ===
+{diagnosis_str}
+
 ---
 Identify patterns the rules would MISS and suggest exactly {n_suggestions} novel,
 specific, actionable tasks.
@@ -119,6 +127,7 @@ specific, actionable tasks.
 Guidelines:
 - Look for clinical interactions (e.g. HbA1c worsening + poor sleep + high stress)
 - Consider worsening trends (e.g. weight increasing across snapshots)
+- Use diagnosis memory only when it is supported by the current patient wording
 - Be concrete — not "eat better" but "reduce refined carbohydrates to help manage HbA1c trend"
 - Do NOT duplicate existing tasks
 - Return ONLY a JSON array of strings, no markdown, no preamble.

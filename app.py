@@ -8,9 +8,10 @@ Integrated Streamlit UI combining:
 
 Integration flow on every user message:
   1. User sends message → stored in conversation.json
-  2. Maria's agentic run loop executes (tool calls handled inline)
-  3. Background: write_attr.py (persona extraction) → generate_task.py (rules + LLM tasks)
-  4. UI refreshes with Maria's reply + updated tasks + updated persona
+  2. write_attr.py + diagnosis_memory.py refresh factual and inferred memory
+  3. Maria's agentic run loop executes with the refreshed memory context
+  4. generate_task.py produces rule, diagnosis-informed, and LLM tasks
+  5. UI refreshes with Maria's reply + updated tasks + updated persona
 """
 
 import json
@@ -20,6 +21,7 @@ import streamlit as st
 from groq import Groq
 from dotenv import load_dotenv
 from datetime import datetime
+from diagnosis_memory import format_diagnosis_context, load_diagnosis_memory
 
 load_dotenv()
 
@@ -27,6 +29,7 @@ load_dotenv()
 CONV_FILE = "conversation.json"
 TASK_FILE = "task.json"
 PERSONA_FILE = "persona.json"
+DIAGNOSIS_MEMORY_FILE = "diagnosis_memory.json"
 
 # ── Page config ───────────────────────────────────────────────────────────────
 st.set_page_config(
@@ -80,6 +83,7 @@ def build_extra_context() -> str:
     """
     persona = load_json(PERSONA_FILE, {})
     tasks = load_json(TASK_FILE, {})
+    diagnosis_memory = load_diagnosis_memory()
 
     known = {k: v for k, v in persona.items() if v not in (-1, None, "") and not k.startswith("__")}
     persona_lines = "\n".join(f"  {k}: {v}" for k, v in known.items()) or "  (no data extracted yet)"
@@ -88,16 +92,17 @@ def build_extra_context() -> str:
 
     return (
         f"EXTRACTED HEALTH PROFILE (from conversation analysis):\n{persona_lines}\n\n"
+        f"{format_diagnosis_context(diagnosis_memory)}\n\n"
         f"CURRENT CARE TASKS:\n{task_lines}"
     )
 
 
-def run_background_pipeline():
+def run_context_refresh_pipeline():
     """
-    Run write_attr.py then generate_task.py as subprocesses.
-    This is identical to how llm-planner's app.py triggers the pipeline.
+    Refresh factual persona memory and diagnosis hypotheses from the latest
+    patient message before MarIA generates any remedies.
     """
-    for script in ["write_attr.py", "generate_task.py"]:
+    for script in ["write_attr.py", "diagnosis_memory.py"]:
         result = subprocess.run(
             ["python", script],
             capture_output=True,
@@ -106,6 +111,20 @@ def run_background_pipeline():
         )
         if result.returncode != 0:
             st.warning(f"Pipeline warning ({script}): {result.stderr[:200]}")
+
+
+def run_task_pipeline():
+    """
+    Generate tasks after persona + diagnosis memory have been refreshed.
+    """
+    result = subprocess.run(
+        ["python", "generate_task.py"],
+        capture_output=True,
+        text=True,
+        cwd=os.path.dirname(os.path.abspath(__file__)),
+    )
+    if result.returncode != 0:
+        st.warning(f"Pipeline warning (generate_task.py): {result.stderr[:200]}")
 
 
 # ── Sidebar: persona + recorded actions ───────────────────────────────────────
@@ -142,6 +161,7 @@ def render_sidebar():
     # Recorded actions (from in-memory store)
     from business.action_business import get_memory_store
     store = get_memory_store()
+    diagnosis_memory = load_json(DIAGNOSIS_MEMORY_FILE, {})
 
     st.sidebar.divider()
     st.sidebar.header("📋 Recorded Actions")
@@ -171,6 +191,21 @@ def render_sidebar():
         st.sidebar.subheader("📨 Proactive Messages")
         for pm in store["proactive_messages"][-3:]:
             st.sidebar.markdown(f"- {pm['description']} ({pm['theme']})")
+
+    st.sidebar.divider()
+    st.sidebar.header("🧠 Diagnosis Memory")
+    symptoms = diagnosis_memory.get("symptoms_normalized", [])
+    diseases = diagnosis_memory.get("candidate_diseases", [])
+    if symptoms:
+        st.sidebar.markdown("**Symptoms**")
+        st.sidebar.markdown(", ".join(symptoms[:8]))
+    else:
+        st.sidebar.caption("No symptom hypotheses yet.")
+
+    if diseases:
+        st.sidebar.markdown("**Probable diseases**")
+        for disease in diseases[:3]:
+            st.sidebar.markdown(f"- {disease['name']} ({disease['probability']:.0%})")
 
     st.sidebar.divider()
     if st.sidebar.button("🔄 Reset Session"):
@@ -222,10 +257,14 @@ with col_chat:
         # 1. Save to conversation.json (feeds llm-planner pipeline)
         add_to_conversation(user_input.strip())
 
-        # 2. Build context from current persona + tasks for Maria's system prompt
+        # 2. Refresh persona + diagnosis memory before MarIA responds
+        with st.spinner("Refreshing health memory…"):
+            run_context_refresh_pipeline()
+
+        # 3. Build context from current persona + diagnosis memory + tasks
         extra_context = build_extra_context()
 
-        # 3. Run Maria's agentic loop (tool calls handled inside)
+        # 4. Run Maria's agentic loop (tool calls handled inside)
         with st.spinner("MarIA is thinking…"):
             reply = maria.run(
                 content=user_input.strip(),
@@ -239,16 +278,20 @@ with col_chat:
             "timestamp": datetime.now().strftime("%H:%M"),
         })
 
-        # 4. Run background pipeline: write_attr → generate_task
+        # 5. Generate remedies/tasks from refreshed memory
         with st.spinner("Updating health profile and tasks…"):
-            run_background_pipeline()
+            run_task_pipeline()
 
         st.rerun()
 
 # ── RIGHT: Task panel (llm-planner) ──────────────────────────────────────────
 with col_tasks:
     tasks = load_json(TASK_FILE, {})
-    rule_tasks = {k: v for k, v in tasks.items() if not v.startswith("[LLM]")}
+    rule_tasks = {
+        k: v for k, v in tasks.items()
+        if not v.startswith("[LLM]") and not v.startswith("[DX]")
+    }
+    diagnosis_tasks = {k: v for k, v in tasks.items() if v.startswith("[DX]")}
     llm_tasks = {k: v for k, v in tasks.items() if v.startswith("[LLM]")}
 
     st.subheader("📋 Rule-Based Tasks")
@@ -258,6 +301,16 @@ with col_tasks:
             st.markdown(f"**{k}.** {v}")
     else:
         st.info("No rule-based tasks yet. Chat with MarIA to start building your profile.")
+
+    st.divider()
+
+    st.subheader("🧠 Diagnosis-Informed Tasks")
+    st.caption("Knowledge-graph suggestions derived from symptom extraction and disease hypotheses")
+    if diagnosis_tasks:
+        for k, v in diagnosis_tasks.items():
+            st.markdown(f"**{k}.** {v.removeprefix('[DX] ')}")
+    else:
+        st.info("Diagnosis-informed tasks appear after symptoms are detected in conversation.")
 
     st.divider()
 

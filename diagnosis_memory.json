@@ -1,0 +1,13 @@
+{
+    "patient_messages": [],
+    "symptoms_raw": [],
+    "symptoms_normalized": [],
+    "unmatched_symptoms": [],
+    "candidate_diseases": [],
+    "recommended_tasks": [],
+    "metadata": {
+        "updated_at": null,
+        "patient_message_count": 0,
+        "extractor": "lightweight-kiddi-adapter"
+    }
+}
