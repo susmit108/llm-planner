@@ -126,6 +126,9 @@ def format_tasks(tasks: dict) -> str:
         if v.startswith("[LLM]"):
             tag = "[LLM]"
             label = v.removeprefix("[LLM] ")
+        elif v.startswith("[explore]"):
+            tag = "[explore]"
+            label = v.removeprefix("[explore] ")
         elif v.startswith("[DX]"):
             tag = "[DX]"
             label = v.removeprefix("[DX] ")
@@ -311,10 +314,11 @@ def run_batch(input_file: str, start_line: int = 1, delay: float = 0, no_maria: 
         final_tasks = load_tasks()
         rule_tasks = {
             k: v for k, v in final_tasks.items()
-            if not v.startswith("[LLM]") and not v.startswith("[DX]")
+            if not v.startswith("[LLM]") and not v.startswith("[DX]") and not v.startswith("[explore]")
         }
         diagnosis_tasks = {k: v for k, v in final_tasks.items() if v.startswith("[DX]")}
         llm_tasks  = {k: v for k, v in final_tasks.items() if v.startswith("[LLM]")}
+        explore_tasks = {k: v for k, v in final_tasks.items() if v.startswith("[explore]")}
 
         log(f"\nRule-based ({len(rule_tasks)}):", log_fh)
         for k, v in rule_tasks.items():
@@ -327,6 +331,10 @@ def run_batch(input_file: str, start_line: int = 1, delay: float = 0, no_maria: 
         log(f"\nLLM-suggested ({len(llm_tasks)}):", log_fh)
         for k, v in llm_tasks.items():
             log(f"  {k}. {v.removeprefix('[LLM] ')}", log_fh)
+
+        log(f"\nLLM exploration ({len(explore_tasks)}):", log_fh)
+        for k, v in explore_tasks.items():
+            log(f"  {k}. {v.removeprefix('[explore] ')}", log_fh)
 
         log("\n" + SEPARATOR, log_fh)
         log("FINAL PERSONA", log_fh)

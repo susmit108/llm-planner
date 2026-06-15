@@ -289,10 +289,11 @@ with col_tasks:
     tasks = load_json(TASK_FILE, {})
     rule_tasks = {
         k: v for k, v in tasks.items()
-        if not v.startswith("[LLM]") and not v.startswith("[DX]")
+        if not v.startswith("[LLM]") and not v.startswith("[DX]") and not v.startswith("[explore]")
     }
     diagnosis_tasks = {k: v for k, v in tasks.items() if v.startswith("[DX]")}
     llm_tasks = {k: v for k, v in tasks.items() if v.startswith("[LLM]")}
+    explore_tasks = {k: v for k, v in tasks.items() if v.startswith("[explore]")}
 
     st.subheader("📋 Rule-Based Tasks")
     st.caption("Deterministic clinical rules (llm-planner + maria_paper domain)")
@@ -321,6 +322,16 @@ with col_tasks:
             st.markdown(f"**{k}.** {v.removeprefix('[LLM] ')}")
     else:
         st.info("LLM suggestions appear after a few conversation turns.")
+
+    st.divider()
+
+    st.subheader("🔎 LLM Exploration Tasks")
+    st.caption("Explores latest persona changes against the current query")
+    if explore_tasks:
+        for k, v in explore_tasks.items():
+            st.markdown(f"**{k}.** {v.removeprefix('[explore] ')}")
+    else:
+        st.info("Exploration tasks appear after a query changes the health profile.")
 
     # Conversation log expander
     with st.expander("📝 Conversation log (raw)"):

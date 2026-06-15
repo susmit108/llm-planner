@@ -16,6 +16,7 @@ import copy
 from datetime import datetime
 
 from groq import Groq
+from groq import APIStatusError
 from dotenv import load_dotenv
 from config import get_groq_model
 from diagnosis_memory import load_diagnosis_memory
@@ -45,6 +46,29 @@ EXISTING_RULE_DESCRIPTIONS = [
     "smoker → cessation programme",
     "high stress AND poor sleep → mindfulness/CBT referral",
 ]
+
+MAX_CONVERSATION_TURNS = 8
+MAX_DIAGNOSIS_TASKS = 8
+MAX_TASKS_IN_PROMPT = 20
+
+
+def _recent_conversation_text(conversation: dict, limit: int = MAX_CONVERSATION_TURNS) -> str:
+    entries = list(conversation.get("Conversation", {}).values())[-limit:]
+    return "\n".join(f"  [{i+1}] {c}" for i, c in enumerate(entries)) or "No entries yet."
+
+
+def _compact_existing_tasks(existing_tasks: dict, limit: int = MAX_TASKS_IN_PROMPT) -> str:
+    values = list(existing_tasks.values())[-limit:]
+    return "\n".join(f"  - {v}" for v in values) or "None yet."
+
+
+def _compact_diagnosis_memory(memory: dict) -> dict:
+    compact = {
+        "symptoms_normalized": memory.get("symptoms_normalized", [])[:20],
+        "candidate_diseases": memory.get("candidate_diseases", [])[:8],
+        "recommended_tasks": memory.get("recommended_tasks", [])[:MAX_DIAGNOSIS_TASKS],
+    }
+    return {key: value for key, value in compact.items() if value}
 
 
 def load_history() -> list[dict]:
@@ -84,12 +108,11 @@ def suggest_tasks_via_llm(persona, conversation, existing_tasks, history, n_sugg
     diagnosis_memory = load_diagnosis_memory()
 
     persona_str = json.dumps({k: v for k, v in persona.items() if not k.startswith("__")}, indent=2)
-    conv_entries = list(conversation.get("Conversation", {}).values())
-    conversation_str = "\n".join(f"  [{i+1}] {c}" for i, c in enumerate(conv_entries)) or "No entries yet."
-    existing_tasks_str = "\n".join(f"  - {v}" for v in existing_tasks.values()) or "None yet."
+    conversation_str = _recent_conversation_text(conversation)
+    existing_tasks_str = _compact_existing_tasks(existing_tasks)
     rules_str = "\n".join(f"  - {r}" for r in EXISTING_RULE_DESCRIPTIONS)
     delta_str = build_state_delta(history)
-    diagnosis_str = json.dumps(diagnosis_memory, indent=2)
+    diagnosis_str = json.dumps(_compact_diagnosis_memory(diagnosis_memory), indent=2)
 
     system_prompt = (
         "You are a proactive medical and lifestyle planning assistant working alongside MarIA, "
@@ -135,15 +158,21 @@ Guidelines:
 Example: ["Schedule a sleep study: sleep duration has dropped 3 sessions in a row alongside rising BP"]
 """.strip()
 
-    response = client.chat.completions.create(
-        model=get_groq_model(),
-        messages=[
-            {"role": "system", "content": system_prompt},
-            {"role": "user", "content": user_prompt},
-        ],
-        temperature=0.4,
-        max_tokens=512,
-    )
+    try:
+        response = client.chat.completions.create(
+            model=get_groq_model(),
+            messages=[
+                {"role": "system", "content": system_prompt},
+                {"role": "user", "content": user_prompt},
+            ],
+            temperature=0.4,
+            max_tokens=512,
+        )
+    except APIStatusError as exc:
+        if exc.status_code == 413:
+            print("LLM suggestion skipped: prompt exceeded Groq request size limit.")
+            return []
+        raise
 
     raw = response.choices[0].message.content.strip()
     if raw.startswith("```"):

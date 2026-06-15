@@ -1,3 +1,24 @@
 {
-    "Conversation": {}
+    "Conversation": {
+        "1": "I am 47 years old and my name is Carlos. I weigh 102 kg and I am 1.74 m tall.",
+        "2": "My doctor told me last week that I have high blood pressure, around 155 over 95.",
+        "3": "I was recently diagnosed with type 2 diabetes. My HbA1c came back at 8.3 percent.",
+        "4": "I smoke about half a pack a day, maybe 10 cigarettes. I have been smoking for 20 years.",
+        "5": "I usually sleep around 5 hours a night because of work stress. I feel exhausted all the time.",
+        "6": "My LDL cholesterol was 162 mg/dL and my HDL was 36 mg/dL in my last blood test.",
+        "7": "I do not exercise at all. I sit at a desk for 10 hours a day.",
+        "8": "My abdominal circumference was measured at 108 cm at my last appointment.",
+        "9": "Can you save my weight as 102 kg and my blood pressure as 155/95?",
+        "10": "My Framingham score came out at 23 percent according to my cardiologist. He said it was high.",
+        "11": "I have been feeling a lot of chest tightness after climbing stairs lately.",
+        "12": "I would like a reminder to take my metformin 500mg every day at 8am starting tomorrow.",
+        "13": "My doctor wants me to come back for a follow-up consultation on 15th July. Can you register that?",
+        "14": "I am allergic to penicillin. Also I cannot eat gluten because of a diagnosed intolerance.",
+        "15": "I prefer not to eat red meat. I follow a mostly plant-based diet during the week.",
+        "16": "I lost 2 kg this month. My current weight is now 100 kg. Please update my weight.",
+        "17": "I checked my blood pressure at the pharmacy today, it was 148 over 90. A bit better.",
+        "18": "I slept 7 hours last night for the first time in months. I felt much better this morning.",
+        "19": "I went for a 30 minute walk today. I want to start exercising daily.",
+        "20": "My stress level has been very high lately, about 8 out of 10. Work has been overwhelming."
+    }
 }

@@ -9,3 +9,7 @@ def get_groq_model() -> str:
     if not model:
         raise RuntimeError("GROQ_MODEL is not set. Add it to your .env file.")
     return model
+
+
+def get_maria_model() -> str:
+    return os.getenv("MARIA_GROQ_MODEL") or get_groq_model()

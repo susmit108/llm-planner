@@ -29,7 +29,7 @@ from groq import Groq
 
 from tools import MARIA_TOOLS
 from business.action_business import resolve_function
-from config import get_groq_model
+from config import get_maria_model
 
 
 # ---------------------------------------------------------------------------
@@ -58,7 +58,7 @@ class Maria:
         model: str | None = None,
     ):
         self.client = client
-        self.model = model or get_groq_model()
+        self.model = model or get_maria_model()
         # Per-user rolling threads: { user_id -> [{"role":…,"content":…}, …] }
         self._threads: dict[int, list[dict]] = {}
 

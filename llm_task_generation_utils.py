@@ -24,6 +24,7 @@ TASK_FILE = Path("task.json")
 TASK_PREFIXES = (
     "[LLM] ",
     "[DX] ",
+    "[explore] ",
     "[LLM-ONLY] ",
     "[LLM-COT] ",
 )

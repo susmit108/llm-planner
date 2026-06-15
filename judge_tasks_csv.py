@@ -14,6 +14,7 @@ Output:
 Usage:
     ./.venv/bin/python judge_tasks_csv.py
     ./.venv/bin/python judge_tasks_csv.py --input results/generated_tasks.csv --output results/generated_tasks_judged.csv
+    ./.venv/bin/python judge_tasks_csv.py --task-json task.json --conversation-json conversation.json
 """
 
 from __future__ import annotations
@@ -94,6 +95,62 @@ Return ONLY valid JSON with this schema:
 }
 """.strip()
 
+JUDGE_FULL_CONVERSATION_SYSTEM_PROMPT = """
+You are an expert evaluator for a clinical task-suggestion pipeline.
+
+Your job is to judge how well a suggested task matches the entire patient
+conversation. You are not acting as a doctor giving fresh advice. You are
+grading the quality of alignment between:
+1. the full conversation context, and
+2. the task that the system suggested.
+
+Primary objective:
+Measure whether the task is appropriate, relevant, useful, and clinically
+reasonable given the whole conversation.
+
+What "good alignment" means:
+- The task addresses information explicitly stated in the conversation, or a
+  strong and reasonable implication from the conversation.
+- The task is actionable and specific enough to be useful.
+- The task is clinically and behaviorally appropriate for the patient's overall
+  profile and stated needs.
+- The task is not generic, unrelated, redundant, or based on unsupported leaps.
+
+Likert scale:
+1 = Very poor match
+The task is irrelevant, unsafe, unsupported, or clearly mismatched.
+
+2 = Weak match
+The task has a slight connection to the conversation but is mostly generic,
+poorly grounded, redundant, or not the most appropriate response.
+
+3 = Moderate match
+The task is partially relevant and plausible, but it is somewhat generic,
+indirect, incomplete, or only loosely tied to the conversation.
+
+4 = Good match
+The task is relevant, appropriate, and useful, with only minor issues in
+specificity, redundancy, or tightness of fit.
+
+5 = Excellent match
+The task is directly supported by the conversation, actionable, specific, and
+clearly appropriate for the patient's overall situation.
+
+Scoring dimensions to consider before assigning the final score:
+- Relevance to the full conversation
+- Support from explicitly stated patient facts
+- Actionability and specificity
+- Clinical/common-sense appropriateness
+- Absence of unsupported leaps or unnecessary duplication
+
+Return ONLY valid JSON with this schema:
+{
+  "likert_score": 1,
+  "rating_label": "very poor match",
+  "short_reason": "1-2 sentence explanation grounded in the conversation and task."
+}
+""".strip()
+
 
 def build_user_prompt(row: dict[str, str]) -> str:
     return f"""
@@ -116,6 +173,50 @@ Instructions:
 - Keep the explanation concise and concrete.
 - Return JSON only.
 """.strip()
+
+
+def build_full_conversation_user_prompt(row: dict[str, str]) -> str:
+    return f"""
+Evaluate the following task against the entire conversation.
+
+FULL CONVERSATION:
+{row["conversation_text"]}
+
+SUGGESTED TASK:
+{row["task_text"]}
+
+TASK SOURCE:
+{row["task_source"]}
+
+Instructions:
+- Score the task on the 1-5 Likert scale defined in the system prompt.
+- Focus on whether this task is well supported by the full conversation.
+- Penalize generic, redundant, weakly supported, or clinically inappropriate tasks.
+- Keep the explanation concise and concrete.
+- Return JSON only.
+""".strip()
+
+
+def task_source(task_text: str) -> str:
+    if task_text.startswith("[LLM-COT]"):
+        return "llm_cot"
+    if task_text.startswith("[LLM-ONLY]"):
+        return "llm_only"
+    if task_text.startswith("[LLM]"):
+        return "llm"
+    if task_text.startswith("[explore]"):
+        return "explore"
+    if task_text.startswith("[DX]"):
+        return "diagnosis"
+    return "rule"
+
+
+def task_label(task_text: str) -> str:
+    cleaned = task_text.strip()
+    for prefix in ("[LLM-COT] ", "[LLM-ONLY] ", "[LLM] ", "[explore] ", "[DX] "):
+        if cleaned.startswith(prefix):
+            return cleaned.removeprefix(prefix).strip()
+    return cleaned
 
 
 LIKERT_LABELS = {
@@ -266,16 +367,30 @@ def load_env_file(path: str = ".env") -> None:
 
 
 def get_model() -> str:
-    model = os.getenv("GROQ_MODEL")
+    model = os.getenv("JUDGE_GROQ_MODEL") or os.getenv("GROQ_MODEL")
     if not model:
         raise RuntimeError("GROQ_MODEL is not set. Add it to your .env file.")
     return model
 
 
-def judge_row(client, row: dict[str, str]) -> tuple[dict[str, str | int], str]:
+def judge_row(
+    client,
+    row: dict[str, str],
+    full_conversation_mode: bool = False,
+) -> tuple[dict[str, str | int], str]:
+    system_prompt = (
+        JUDGE_FULL_CONVERSATION_SYSTEM_PROMPT
+        if full_conversation_mode
+        else JUDGE_SYSTEM_PROMPT
+    )
+    user_prompt = (
+        build_full_conversation_user_prompt(row)
+        if full_conversation_mode
+        else build_user_prompt(row)
+    )
     messages = [
-        {"role": "system", "content": JUDGE_SYSTEM_PROMPT},
-        {"role": "user", "content": build_user_prompt(row)},
+        {"role": "system", "content": system_prompt},
+        {"role": "user", "content": user_prompt},
     ]
 
     last_raw = ""
@@ -308,6 +423,54 @@ def judge_row(client, row: dict[str, str]) -> tuple[dict[str, str | int], str]:
 def read_rows(path: Path) -> list[dict[str, str]]:
     with path.open("r", newline="") as fh:
         return list(csv.DictReader(fh))
+
+
+def read_conversation_context(path: Path) -> str:
+    if not path.exists():
+        raise FileNotFoundError(f"Conversation context not found: {path}")
+
+    if path.suffix == ".json":
+        data = json.loads(path.read_text())
+        entries = list(data.get("Conversation", {}).values())
+        return "\n".join(f"[{idx}] {text}" for idx, text in enumerate(entries, start=1))
+
+    return path.read_text().strip()
+
+
+def override_rows_conversation(rows: list[dict[str, str]], conversation_text: str) -> list[dict[str, str]]:
+    return [{**row, "conversation_text": conversation_text} for row in rows]
+
+
+def read_rows_from_task_json(task_path: Path, conversation_path: Path, scope: str) -> list[dict[str, str]]:
+    if not task_path.exists():
+        raise FileNotFoundError(f"Task JSON not found: {task_path}")
+    if not conversation_path.exists():
+        raise FileNotFoundError(f"Conversation JSON not found: {conversation_path}")
+
+    tasks = json.loads(task_path.read_text())
+    conversation = json.loads(conversation_path.read_text())
+    entries = list(conversation.get("Conversation", {}).values())
+
+    if scope == "latest":
+        conversation_text = str(entries[-1]) if entries else ""
+        turn_index = str(len(entries))
+    else:
+        conversation_text = "\n".join(f"[{idx}] {text}" for idx, text in enumerate(entries, start=1))
+        turn_index = "final"
+
+    rows = []
+    for task_id, raw_task_text in tasks.items():
+        rows.append(
+            {
+                "turn_index": turn_index,
+                "conversation_text": conversation_text,
+                "task_id": str(task_id),
+                "task_source": task_source(str(raw_task_text)),
+                "task_text": task_label(str(raw_task_text)),
+                "raw_task_text": str(raw_task_text),
+            }
+        )
+    return rows
 
 
 def write_rows(path: Path, rows: list[dict[str, str]]) -> None:
@@ -358,14 +521,36 @@ def save_prompt(path: Path) -> None:
     path.write_text(prompt_text)
 
 
-def run_judging(input_path: str, output_path: str, prompt_output_path: str) -> tuple[int, float]:
-    source = Path(input_path)
-    if not source.exists():
-        raise FileNotFoundError(f"Input CSV not found: {input_path}")
-
+def run_judging(
+    input_path: str,
+    output_path: str,
+    prompt_output_path: str,
+    task_json_path: str | None = None,
+    conversation_json_path: str = "conversation.json",
+    conversation_scope: str = "all",
+    full_conversation_path: str | None = None,
+) -> tuple[int, float]:
     load_env_file()
 
-    rows = read_rows(source)
+    if task_json_path:
+        rows = read_rows_from_task_json(
+            Path(task_json_path),
+            Path(conversation_json_path),
+            conversation_scope,
+        )
+    else:
+        source = Path(input_path)
+        if not source.exists():
+            raise FileNotFoundError(f"Input CSV not found: {input_path}")
+        rows = read_rows(source)
+
+    full_conversation_mode = full_conversation_path is not None
+    if full_conversation_path:
+        rows = override_rows_conversation(
+            rows,
+            read_conversation_context(Path(full_conversation_path)),
+        )
+
     save_prompt(Path(prompt_output_path))
 
     try:
@@ -383,7 +568,11 @@ def run_judging(input_path: str, output_path: str, prompt_output_path: str) -> t
     progress = tqdm(rows, desc="Judging tasks", unit="task")
     for row in progress:
         try:
-            verdict, _raw_response = judge_row(client, row)
+            verdict, _raw_response = judge_row(
+                client,
+                row,
+                full_conversation_mode=full_conversation_mode,
+            )
             judged_rows.append(
                 {
                     **row,
@@ -433,12 +622,47 @@ def parse_args() -> argparse.Namespace:
         default="results/task_judge_prompt.txt",
         help="Where to save the judge prompt text.",
     )
+    parser.add_argument(
+        "--task-json",
+        help=(
+            "Judge tasks directly from task.json instead of an exported CSV. "
+            "This evaluates the final task list against conversation context, "
+            "not exact per-turn trigger rows."
+        ),
+    )
+    parser.add_argument(
+        "--conversation-json",
+        default="conversation.json",
+        help="Conversation JSON to use with --task-json.",
+    )
+    parser.add_argument(
+        "--conversation-scope",
+        choices=["all", "latest"],
+        default="all",
+        help="Use all conversation turns or only the latest turn with --task-json.",
+    )
+    parser.add_argument(
+        "--full-conversation",
+        help=(
+            "Override each CSV row's conversation_text with a full conversation "
+            "context from conversation.json or conversation.txt, and use the "
+            "full-conversation judge rubric."
+        ),
+    )
     return parser.parse_args()
 
 
 def main() -> None:
     args = parse_args()
-    total_rows, avg_score = run_judging(args.input, args.output, args.prompt_output)
+    total_rows, avg_score = run_judging(
+        args.input,
+        args.output,
+        args.prompt_output,
+        task_json_path=args.task_json,
+        conversation_json_path=args.conversation_json,
+        conversation_scope=args.conversation_scope,
+        full_conversation_path=args.full_conversation,
+    )
     print(
         f"Judged {total_rows} task(s). Average Likert score: {avg_score:.2f}. "
         f"Saved scored CSV to {args.output}"

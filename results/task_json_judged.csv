@@ -1,0 +1,621 @@
+turn_index,conversation_text,task_id,task_source,task_text,raw_task_text,likert_score,rating_label,short_reason,judge_error
+final,"[1] I am 47 years old and my name is Carlos. I weigh 102 kg and I am 1.74 m tall.
+[2] My doctor told me last week that I have high blood pressure, around 155 over 95.
+[3] I was recently diagnosed with type 2 diabetes. My HbA1c came back at 8.3 percent.
+[4] I smoke about half a pack a day, maybe 10 cigarettes. I have been smoking for 20 years.
+[5] I usually sleep around 5 hours a night because of work stress. I feel exhausted all the time.
+[6] My LDL cholesterol was 162 mg/dL and my HDL was 36 mg/dL in my last blood test.
+[7] I do not exercise at all. I sit at a desk for 10 hours a day.
+[8] My abdominal circumference was measured at 108 cm at my last appointment.
+[9] Can you save my weight as 102 kg and my blood pressure as 155/95?
+[10] My Framingham score came out at 23 percent according to my cardiologist. He said it was high.
+[11] I have been feeling a lot of chest tightness after climbing stairs lately.
+[12] I would like a reminder to take my metformin 500mg every day at 8am starting tomorrow.
+[13] My doctor wants me to come back for a follow-up consultation on 15th July. Can you register that?
+[14] I am allergic to penicillin. Also I cannot eat gluten because of a diagnosed intolerance.
+[15] I prefer not to eat red meat. I follow a mostly plant-based diet during the week.
+[16] I lost 2 kg this month. My current weight is now 100 kg. Please update my weight.
+[17] I checked my blood pressure at the pharmacy today, it was 148 over 90. A bit better.
+[18] I slept 7 hours last night for the first time in months. I felt much better this morning.
+[19] I went for a 30 minute walk today. I want to start exercising daily.
+[20] My stress level has been very high lately, about 8 out of 10. Work has been overwhelming.",1,rule,Seek hypertension evaluation: systolic BP ≥140 mmHg,Seek hypertension evaluation: systolic BP ≥140 mmHg,,,,"Error code: 413 - {'error': {'message': 'Request Entity Too Large', 'type': 'invalid_request_error', 'code': 'request_too_large'}}"
+final,"[1] I am 47 years old and my name is Carlos. I weigh 102 kg and I am 1.74 m tall.
+[2] My doctor told me last week that I have high blood pressure, around 155 over 95.
+[3] I was recently diagnosed with type 2 diabetes. My HbA1c came back at 8.3 percent.
+[4] I smoke about half a pack a day, maybe 10 cigarettes. I have been smoking for 20 years.
+[5] I usually sleep around 5 hours a night because of work stress. I feel exhausted all the time.
+[6] My LDL cholesterol was 162 mg/dL and my HDL was 36 mg/dL in my last blood test.
+[7] I do not exercise at all. I sit at a desk for 10 hours a day.
+[8] My abdominal circumference was measured at 108 cm at my last appointment.
+[9] Can you save my weight as 102 kg and my blood pressure as 155/95?
+[10] My Framingham score came out at 23 percent according to my cardiologist. He said it was high.
+[11] I have been feeling a lot of chest tightness after climbing stairs lately.
+[12] I would like a reminder to take my metformin 500mg every day at 8am starting tomorrow.
+[13] My doctor wants me to come back for a follow-up consultation on 15th July. Can you register that?
+[14] I am allergic to penicillin. Also I cannot eat gluten because of a diagnosed intolerance.
+[15] I prefer not to eat red meat. I follow a mostly plant-based diet during the week.
+[16] I lost 2 kg this month. My current weight is now 100 kg. Please update my weight.
+[17] I checked my blood pressure at the pharmacy today, it was 148 over 90. A bit better.
+[18] I slept 7 hours last night for the first time in months. I felt much better this morning.
+[19] I went for a 30 minute walk today. I want to start exercising daily.
+[20] My stress level has been very high lately, about 8 out of 10. Work has been overwhelming.",2,llm,Schedule a waist (abdominal) circumference measurement to evaluate central obesity risk,[LLM] Schedule a waist (abdominal) circumference measurement to evaluate central obesity risk,,,,"Error code: 413 - {'error': {'message': 'Request Entity Too Large', 'type': 'invalid_request_error', 'code': 'request_too_large'}}"
+final,"[1] I am 47 years old and my name is Carlos. I weigh 102 kg and I am 1.74 m tall.
+[2] My doctor told me last week that I have high blood pressure, around 155 over 95.
+[3] I was recently diagnosed with type 2 diabetes. My HbA1c came back at 8.3 percent.
+[4] I smoke about half a pack a day, maybe 10 cigarettes. I have been smoking for 20 years.
+[5] I usually sleep around 5 hours a night because of work stress. I feel exhausted all the time.
+[6] My LDL cholesterol was 162 mg/dL and my HDL was 36 mg/dL in my last blood test.
+[7] I do not exercise at all. I sit at a desk for 10 hours a day.
+[8] My abdominal circumference was measured at 108 cm at my last appointment.
+[9] Can you save my weight as 102 kg and my blood pressure as 155/95?
+[10] My Framingham score came out at 23 percent according to my cardiologist. He said it was high.
+[11] I have been feeling a lot of chest tightness after climbing stairs lately.
+[12] I would like a reminder to take my metformin 500mg every day at 8am starting tomorrow.
+[13] My doctor wants me to come back for a follow-up consultation on 15th July. Can you register that?
+[14] I am allergic to penicillin. Also I cannot eat gluten because of a diagnosed intolerance.
+[15] I prefer not to eat red meat. I follow a mostly plant-based diet during the week.
+[16] I lost 2 kg this month. My current weight is now 100 kg. Please update my weight.
+[17] I checked my blood pressure at the pharmacy today, it was 148 over 90. A bit better.
+[18] I slept 7 hours last night for the first time in months. I felt much better this morning.
+[19] I went for a 30 minute walk today. I want to start exercising daily.
+[20] My stress level has been very high lately, about 8 out of 10. Work has been overwhelming.",3,explore,"Arrange a comprehensive cardiovascular risk assessment (e.g., lipid panel, fasting glucose, ECG) to quantify additional risk factors associated with the elevated blood pressure.","[explore] Arrange a comprehensive cardiovascular risk assessment (e.g., lipid panel, fasting glucose, ECG) to quantify additional risk factors associated with the elevated blood pressure.",5,excellent match,"The task directly addresses the user's extensive cardiovascular risk factors (high BP, diabetes, dyslipidemia, smoking, chest tightness, high Framingham score) and is a specific, actionable, clinically appropriate recommendation.",
+final,"[1] I am 47 years old and my name is Carlos. I weigh 102 kg and I am 1.74 m tall.
+[2] My doctor told me last week that I have high blood pressure, around 155 over 95.
+[3] I was recently diagnosed with type 2 diabetes. My HbA1c came back at 8.3 percent.
+[4] I smoke about half a pack a day, maybe 10 cigarettes. I have been smoking for 20 years.
+[5] I usually sleep around 5 hours a night because of work stress. I feel exhausted all the time.
+[6] My LDL cholesterol was 162 mg/dL and my HDL was 36 mg/dL in my last blood test.
+[7] I do not exercise at all. I sit at a desk for 10 hours a day.
+[8] My abdominal circumference was measured at 108 cm at my last appointment.
+[9] Can you save my weight as 102 kg and my blood pressure as 155/95?
+[10] My Framingham score came out at 23 percent according to my cardiologist. He said it was high.
+[11] I have been feeling a lot of chest tightness after climbing stairs lately.
+[12] I would like a reminder to take my metformin 500mg every day at 8am starting tomorrow.
+[13] My doctor wants me to come back for a follow-up consultation on 15th July. Can you register that?
+[14] I am allergic to penicillin. Also I cannot eat gluten because of a diagnosed intolerance.
+[15] I prefer not to eat red meat. I follow a mostly plant-based diet during the week.
+[16] I lost 2 kg this month. My current weight is now 100 kg. Please update my weight.
+[17] I checked my blood pressure at the pharmacy today, it was 148 over 90. A bit better.
+[18] I slept 7 hours last night for the first time in months. I felt much better this morning.
+[19] I went for a 30 minute walk today. I want to start exercising daily.
+[20] My stress level has been very high lately, about 8 out of 10. Work has been overwhelming.",4,explore,"Schedule a personalized lifestyle counseling session (dietary advice, exercise plan, weight‑management strategies) to support blood‑pressure control.","[explore] Schedule a personalized lifestyle counseling session (dietary advice, exercise plan, weight‑management strategies) to support blood‑pressure control.",5,excellent match,"The task directly addresses the user's high blood pressure, elevated cardiovascular risk, diabetes, dyslipidemia, sedentary lifestyle, smoking, poor sleep, and desire to improve health, making it a specific, actionable, and clinically appropriate response to the detailed concerns expressed in the query.",
+final,"[1] I am 47 years old and my name is Carlos. I weigh 102 kg and I am 1.74 m tall.
+[2] My doctor told me last week that I have high blood pressure, around 155 over 95.
+[3] I was recently diagnosed with type 2 diabetes. My HbA1c came back at 8.3 percent.
+[4] I smoke about half a pack a day, maybe 10 cigarettes. I have been smoking for 20 years.
+[5] I usually sleep around 5 hours a night because of work stress. I feel exhausted all the time.
+[6] My LDL cholesterol was 162 mg/dL and my HDL was 36 mg/dL in my last blood test.
+[7] I do not exercise at all. I sit at a desk for 10 hours a day.
+[8] My abdominal circumference was measured at 108 cm at my last appointment.
+[9] Can you save my weight as 102 kg and my blood pressure as 155/95?
+[10] My Framingham score came out at 23 percent according to my cardiologist. He said it was high.
+[11] I have been feeling a lot of chest tightness after climbing stairs lately.
+[12] I would like a reminder to take my metformin 500mg every day at 8am starting tomorrow.
+[13] My doctor wants me to come back for a follow-up consultation on 15th July. Can you register that?
+[14] I am allergic to penicillin. Also I cannot eat gluten because of a diagnosed intolerance.
+[15] I prefer not to eat red meat. I follow a mostly plant-based diet during the week.
+[16] I lost 2 kg this month. My current weight is now 100 kg. Please update my weight.
+[17] I checked my blood pressure at the pharmacy today, it was 148 over 90. A bit better.
+[18] I slept 7 hours last night for the first time in months. I felt much better this morning.
+[19] I went for a 30 minute walk today. I want to start exercising daily.
+[20] My stress level has been very high lately, about 8 out of 10. Work has been overwhelming.",5,rule,Consult your doctor: HbA1c above 6.5% — diabetes screening recommended,Consult your doctor: HbA1c above 6.5% — diabetes screening recommended,2,weak match,"The task is generic and redundant, as the user is already diagnosed with type 2 diabetes and knows their HbA1c is 8.3%; it does not address the specific requests or concerns in the current query.",
+final,"[1] I am 47 years old and my name is Carlos. I weigh 102 kg and I am 1.74 m tall.
+[2] My doctor told me last week that I have high blood pressure, around 155 over 95.
+[3] I was recently diagnosed with type 2 diabetes. My HbA1c came back at 8.3 percent.
+[4] I smoke about half a pack a day, maybe 10 cigarettes. I have been smoking for 20 years.
+[5] I usually sleep around 5 hours a night because of work stress. I feel exhausted all the time.
+[6] My LDL cholesterol was 162 mg/dL and my HDL was 36 mg/dL in my last blood test.
+[7] I do not exercise at all. I sit at a desk for 10 hours a day.
+[8] My abdominal circumference was measured at 108 cm at my last appointment.
+[9] Can you save my weight as 102 kg and my blood pressure as 155/95?
+[10] My Framingham score came out at 23 percent according to my cardiologist. He said it was high.
+[11] I have been feeling a lot of chest tightness after climbing stairs lately.
+[12] I would like a reminder to take my metformin 500mg every day at 8am starting tomorrow.
+[13] My doctor wants me to come back for a follow-up consultation on 15th July. Can you register that?
+[14] I am allergic to penicillin. Also I cannot eat gluten because of a diagnosed intolerance.
+[15] I prefer not to eat red meat. I follow a mostly plant-based diet during the week.
+[16] I lost 2 kg this month. My current weight is now 100 kg. Please update my weight.
+[17] I checked my blood pressure at the pharmacy today, it was 148 over 90. A bit better.
+[18] I slept 7 hours last night for the first time in months. I felt much better this morning.
+[19] I went for a 30 minute walk today. I want to start exercising daily.
+[20] My stress level has been very high lately, about 8 out of 10. Work has been overwhelming.",6,rule,Schedule endocrinology review: HbA1c above target (>7%) for diabetic patient,Schedule endocrinology review: HbA1c above target (>7%) for diabetic patient,,,,"Error code: 413 - {'error': {'message': 'Request Entity Too Large', 'type': 'invalid_request_error', 'code': 'request_too_large'}}"
+final,"[1] I am 47 years old and my name is Carlos. I weigh 102 kg and I am 1.74 m tall.
+[2] My doctor told me last week that I have high blood pressure, around 155 over 95.
+[3] I was recently diagnosed with type 2 diabetes. My HbA1c came back at 8.3 percent.
+[4] I smoke about half a pack a day, maybe 10 cigarettes. I have been smoking for 20 years.
+[5] I usually sleep around 5 hours a night because of work stress. I feel exhausted all the time.
+[6] My LDL cholesterol was 162 mg/dL and my HDL was 36 mg/dL in my last blood test.
+[7] I do not exercise at all. I sit at a desk for 10 hours a day.
+[8] My abdominal circumference was measured at 108 cm at my last appointment.
+[9] Can you save my weight as 102 kg and my blood pressure as 155/95?
+[10] My Framingham score came out at 23 percent according to my cardiologist. He said it was high.
+[11] I have been feeling a lot of chest tightness after climbing stairs lately.
+[12] I would like a reminder to take my metformin 500mg every day at 8am starting tomorrow.
+[13] My doctor wants me to come back for a follow-up consultation on 15th July. Can you register that?
+[14] I am allergic to penicillin. Also I cannot eat gluten because of a diagnosed intolerance.
+[15] I prefer not to eat red meat. I follow a mostly plant-based diet during the week.
+[16] I lost 2 kg this month. My current weight is now 100 kg. Please update my weight.
+[17] I checked my blood pressure at the pharmacy today, it was 148 over 90. A bit better.
+[18] I slept 7 hours last night for the first time in months. I felt much better this morning.
+[19] I went for a 30 minute walk today. I want to start exercising daily.
+[20] My stress level has been very high lately, about 8 out of 10. Work has been overwhelming.",7,explore,"[{'task': 'Schedule endocrinology review: HbA1c above target (>7%) for diabetic patient'}, {'task': 'Arrange a comprehensive cardiovascular risk assessment (e.g., lipid panel, fasting glucose, ECG) to quantify additional risk factors associated with the elevated blood pressure.'}]","[explore] [{'task': 'Schedule endocrinology review: HbA1c above target (>7%) for diabetic patient'}, {'task': 'Arrange a comprehensive cardiovascular risk assessment (e.g., lipid panel, fasting glucose, ECG) to quantify additional risk factors associated with the elevated blood pressure.'}]",5,excellent match,"Both tasks directly address the user's current concerns: the elevated HbA1c (>7%) warrants an endocrinology review, and the combination of high blood pressure, dyslipidemia, smoking, and chest tightness justifies a comprehensive cardiovascular risk assessment.",
+final,"[1] I am 47 years old and my name is Carlos. I weigh 102 kg and I am 1.74 m tall.
+[2] My doctor told me last week that I have high blood pressure, around 155 over 95.
+[3] I was recently diagnosed with type 2 diabetes. My HbA1c came back at 8.3 percent.
+[4] I smoke about half a pack a day, maybe 10 cigarettes. I have been smoking for 20 years.
+[5] I usually sleep around 5 hours a night because of work stress. I feel exhausted all the time.
+[6] My LDL cholesterol was 162 mg/dL and my HDL was 36 mg/dL in my last blood test.
+[7] I do not exercise at all. I sit at a desk for 10 hours a day.
+[8] My abdominal circumference was measured at 108 cm at my last appointment.
+[9] Can you save my weight as 102 kg and my blood pressure as 155/95?
+[10] My Framingham score came out at 23 percent according to my cardiologist. He said it was high.
+[11] I have been feeling a lot of chest tightness after climbing stairs lately.
+[12] I would like a reminder to take my metformin 500mg every day at 8am starting tomorrow.
+[13] My doctor wants me to come back for a follow-up consultation on 15th July. Can you register that?
+[14] I am allergic to penicillin. Also I cannot eat gluten because of a diagnosed intolerance.
+[15] I prefer not to eat red meat. I follow a mostly plant-based diet during the week.
+[16] I lost 2 kg this month. My current weight is now 100 kg. Please update my weight.
+[17] I checked my blood pressure at the pharmacy today, it was 148 over 90. A bit better.
+[18] I slept 7 hours last night for the first time in months. I felt much better this morning.
+[19] I went for a 30 minute walk today. I want to start exercising daily.
+[20] My stress level has been very high lately, about 8 out of 10. Work has been overwhelming.",8,rule,Enrol in a smoking cessation programme to significantly reduce cardiovascular risk,Enrol in a smoking cessation programme to significantly reduce cardiovascular risk,,,,"Error code: 413 - {'error': {'message': 'Request Entity Too Large', 'type': 'invalid_request_error', 'code': 'request_too_large'}}"
+final,"[1] I am 47 years old and my name is Carlos. I weigh 102 kg and I am 1.74 m tall.
+[2] My doctor told me last week that I have high blood pressure, around 155 over 95.
+[3] I was recently diagnosed with type 2 diabetes. My HbA1c came back at 8.3 percent.
+[4] I smoke about half a pack a day, maybe 10 cigarettes. I have been smoking for 20 years.
+[5] I usually sleep around 5 hours a night because of work stress. I feel exhausted all the time.
+[6] My LDL cholesterol was 162 mg/dL and my HDL was 36 mg/dL in my last blood test.
+[7] I do not exercise at all. I sit at a desk for 10 hours a day.
+[8] My abdominal circumference was measured at 108 cm at my last appointment.
+[9] Can you save my weight as 102 kg and my blood pressure as 155/95?
+[10] My Framingham score came out at 23 percent according to my cardiologist. He said it was high.
+[11] I have been feeling a lot of chest tightness after climbing stairs lately.
+[12] I would like a reminder to take my metformin 500mg every day at 8am starting tomorrow.
+[13] My doctor wants me to come back for a follow-up consultation on 15th July. Can you register that?
+[14] I am allergic to penicillin. Also I cannot eat gluten because of a diagnosed intolerance.
+[15] I prefer not to eat red meat. I follow a mostly plant-based diet during the week.
+[16] I lost 2 kg this month. My current weight is now 100 kg. Please update my weight.
+[17] I checked my blood pressure at the pharmacy today, it was 148 over 90. A bit better.
+[18] I slept 7 hours last night for the first time in months. I felt much better this morning.
+[19] I went for a 30 minute walk today. I want to start exercising daily.
+[20] My stress level has been very high lately, about 8 out of 10. Work has been overwhelming.",9,rule,Try to get more sleep to reduce blood pressure,Try to get more sleep to reduce blood pressure,,,,"Error code: 413 - {'error': {'message': 'Request Entity Too Large', 'type': 'invalid_request_error', 'code': 'request_too_large'}}"
+final,"[1] I am 47 years old and my name is Carlos. I weigh 102 kg and I am 1.74 m tall.
+[2] My doctor told me last week that I have high blood pressure, around 155 over 95.
+[3] I was recently diagnosed with type 2 diabetes. My HbA1c came back at 8.3 percent.
+[4] I smoke about half a pack a day, maybe 10 cigarettes. I have been smoking for 20 years.
+[5] I usually sleep around 5 hours a night because of work stress. I feel exhausted all the time.
+[6] My LDL cholesterol was 162 mg/dL and my HDL was 36 mg/dL in my last blood test.
+[7] I do not exercise at all. I sit at a desk for 10 hours a day.
+[8] My abdominal circumference was measured at 108 cm at my last appointment.
+[9] Can you save my weight as 102 kg and my blood pressure as 155/95?
+[10] My Framingham score came out at 23 percent according to my cardiologist. He said it was high.
+[11] I have been feeling a lot of chest tightness after climbing stairs lately.
+[12] I would like a reminder to take my metformin 500mg every day at 8am starting tomorrow.
+[13] My doctor wants me to come back for a follow-up consultation on 15th July. Can you register that?
+[14] I am allergic to penicillin. Also I cannot eat gluten because of a diagnosed intolerance.
+[15] I prefer not to eat red meat. I follow a mostly plant-based diet during the week.
+[16] I lost 2 kg this month. My current weight is now 100 kg. Please update my weight.
+[17] I checked my blood pressure at the pharmacy today, it was 148 over 90. A bit better.
+[18] I slept 7 hours last night for the first time in months. I felt much better this morning.
+[19] I went for a 30 minute walk today. I want to start exercising daily.
+[20] My stress level has been very high lately, about 8 out of 10. Work has been overwhelming.",10,llm,"Schedule a home sleep apnea screening test to evaluate for obstructive sleep apnea, which can worsen hypertension, diabetes control, and sleep quality","[LLM] Schedule a home sleep apnea screening test to evaluate for obstructive sleep apnea, which can worsen hypertension, diabetes control, and sleep quality",,,,"Error code: 413 - {'error': {'message': 'Request Entity Too Large', 'type': 'invalid_request_error', 'code': 'request_too_large'}}"
+final,"[1] I am 47 years old and my name is Carlos. I weigh 102 kg and I am 1.74 m tall.
+[2] My doctor told me last week that I have high blood pressure, around 155 over 95.
+[3] I was recently diagnosed with type 2 diabetes. My HbA1c came back at 8.3 percent.
+[4] I smoke about half a pack a day, maybe 10 cigarettes. I have been smoking for 20 years.
+[5] I usually sleep around 5 hours a night because of work stress. I feel exhausted all the time.
+[6] My LDL cholesterol was 162 mg/dL and my HDL was 36 mg/dL in my last blood test.
+[7] I do not exercise at all. I sit at a desk for 10 hours a day.
+[8] My abdominal circumference was measured at 108 cm at my last appointment.
+[9] Can you save my weight as 102 kg and my blood pressure as 155/95?
+[10] My Framingham score came out at 23 percent according to my cardiologist. He said it was high.
+[11] I have been feeling a lot of chest tightness after climbing stairs lately.
+[12] I would like a reminder to take my metformin 500mg every day at 8am starting tomorrow.
+[13] My doctor wants me to come back for a follow-up consultation on 15th July. Can you register that?
+[14] I am allergic to penicillin. Also I cannot eat gluten because of a diagnosed intolerance.
+[15] I prefer not to eat red meat. I follow a mostly plant-based diet during the week.
+[16] I lost 2 kg this month. My current weight is now 100 kg. Please update my weight.
+[17] I checked my blood pressure at the pharmacy today, it was 148 over 90. A bit better.
+[18] I slept 7 hours last night for the first time in months. I felt much better this morning.
+[19] I went for a 30 minute walk today. I want to start exercising daily.
+[20] My stress level has been very high lately, about 8 out of 10. Work has been overwhelming.",11,explore,"[{'task': 'Try to get more sleep to reduce blood pressure'}, {'task': 'Schedule a home sleep apnea screening test to evaluate for obstructive sleep apnea, which can worsen hypertension, diabetes control, and sleep quality'}]","[explore] [{'task': 'Try to get more sleep to reduce blood pressure'}, {'task': 'Schedule a home sleep apnea screening test to evaluate for obstructive sleep apnea, which can worsen hypertension, diabetes control, and sleep quality'}]",,,,"Error code: 413 - {'error': {'message': 'Request Entity Too Large', 'type': 'invalid_request_error', 'code': 'request_too_large'}}"
+final,"[1] I am 47 years old and my name is Carlos. I weigh 102 kg and I am 1.74 m tall.
+[2] My doctor told me last week that I have high blood pressure, around 155 over 95.
+[3] I was recently diagnosed with type 2 diabetes. My HbA1c came back at 8.3 percent.
+[4] I smoke about half a pack a day, maybe 10 cigarettes. I have been smoking for 20 years.
+[5] I usually sleep around 5 hours a night because of work stress. I feel exhausted all the time.
+[6] My LDL cholesterol was 162 mg/dL and my HDL was 36 mg/dL in my last blood test.
+[7] I do not exercise at all. I sit at a desk for 10 hours a day.
+[8] My abdominal circumference was measured at 108 cm at my last appointment.
+[9] Can you save my weight as 102 kg and my blood pressure as 155/95?
+[10] My Framingham score came out at 23 percent according to my cardiologist. He said it was high.
+[11] I have been feeling a lot of chest tightness after climbing stairs lately.
+[12] I would like a reminder to take my metformin 500mg every day at 8am starting tomorrow.
+[13] My doctor wants me to come back for a follow-up consultation on 15th July. Can you register that?
+[14] I am allergic to penicillin. Also I cannot eat gluten because of a diagnosed intolerance.
+[15] I prefer not to eat red meat. I follow a mostly plant-based diet during the week.
+[16] I lost 2 kg this month. My current weight is now 100 kg. Please update my weight.
+[17] I checked my blood pressure at the pharmacy today, it was 148 over 90. A bit better.
+[18] I slept 7 hours last night for the first time in months. I felt much better this morning.
+[19] I went for a 30 minute walk today. I want to start exercising daily.
+[20] My stress level has been very high lately, about 8 out of 10. Work has been overwhelming.",12,rule,Discuss LDL reduction with your doctor: LDL above 130 mg/dL,Discuss LDL reduction with your doctor: LDL above 130 mg/dL,,,,"Error code: 413 - {'error': {'message': 'Request Entity Too Large', 'type': 'invalid_request_error', 'code': 'request_too_large'}}"
+final,"[1] I am 47 years old and my name is Carlos. I weigh 102 kg and I am 1.74 m tall.
+[2] My doctor told me last week that I have high blood pressure, around 155 over 95.
+[3] I was recently diagnosed with type 2 diabetes. My HbA1c came back at 8.3 percent.
+[4] I smoke about half a pack a day, maybe 10 cigarettes. I have been smoking for 20 years.
+[5] I usually sleep around 5 hours a night because of work stress. I feel exhausted all the time.
+[6] My LDL cholesterol was 162 mg/dL and my HDL was 36 mg/dL in my last blood test.
+[7] I do not exercise at all. I sit at a desk for 10 hours a day.
+[8] My abdominal circumference was measured at 108 cm at my last appointment.
+[9] Can you save my weight as 102 kg and my blood pressure as 155/95?
+[10] My Framingham score came out at 23 percent according to my cardiologist. He said it was high.
+[11] I have been feeling a lot of chest tightness after climbing stairs lately.
+[12] I would like a reminder to take my metformin 500mg every day at 8am starting tomorrow.
+[13] My doctor wants me to come back for a follow-up consultation on 15th July. Can you register that?
+[14] I am allergic to penicillin. Also I cannot eat gluten because of a diagnosed intolerance.
+[15] I prefer not to eat red meat. I follow a mostly plant-based diet during the week.
+[16] I lost 2 kg this month. My current weight is now 100 kg. Please update my weight.
+[17] I checked my blood pressure at the pharmacy today, it was 148 over 90. A bit better.
+[18] I slept 7 hours last night for the first time in months. I felt much better this morning.
+[19] I went for a 30 minute walk today. I want to start exercising daily.
+[20] My stress level has been very high lately, about 8 out of 10. Work has been overwhelming.",13,rule,Increase physical activity to raise HDL: current HDL below 40 mg/dL,Increase physical activity to raise HDL: current HDL below 40 mg/dL,5,excellent match,"The user explicitly reports a low HDL (36 mg/dL) and no exercise; recommending increased physical activity to raise HDL directly addresses this fact, is clinically appropriate, specific, and actionable.",
+final,"[1] I am 47 years old and my name is Carlos. I weigh 102 kg and I am 1.74 m tall.
+[2] My doctor told me last week that I have high blood pressure, around 155 over 95.
+[3] I was recently diagnosed with type 2 diabetes. My HbA1c came back at 8.3 percent.
+[4] I smoke about half a pack a day, maybe 10 cigarettes. I have been smoking for 20 years.
+[5] I usually sleep around 5 hours a night because of work stress. I feel exhausted all the time.
+[6] My LDL cholesterol was 162 mg/dL and my HDL was 36 mg/dL in my last blood test.
+[7] I do not exercise at all. I sit at a desk for 10 hours a day.
+[8] My abdominal circumference was measured at 108 cm at my last appointment.
+[9] Can you save my weight as 102 kg and my blood pressure as 155/95?
+[10] My Framingham score came out at 23 percent according to my cardiologist. He said it was high.
+[11] I have been feeling a lot of chest tightness after climbing stairs lately.
+[12] I would like a reminder to take my metformin 500mg every day at 8am starting tomorrow.
+[13] My doctor wants me to come back for a follow-up consultation on 15th July. Can you register that?
+[14] I am allergic to penicillin. Also I cannot eat gluten because of a diagnosed intolerance.
+[15] I prefer not to eat red meat. I follow a mostly plant-based diet during the week.
+[16] I lost 2 kg this month. My current weight is now 100 kg. Please update my weight.
+[17] I checked my blood pressure at the pharmacy today, it was 148 over 90. A bit better.
+[18] I slept 7 hours last night for the first time in months. I felt much better this morning.
+[19] I went for a 30 minute walk today. I want to start exercising daily.
+[20] My stress level has been very high lately, about 8 out of 10. Work has been overwhelming.",14,llm,"Consider a Mediterranean diet rich in fruits, vegetables, and omega-3 fatty acids to help manage HbA1c and improve lipid profile, given the potential benefits for cardiovascular health and diabetes management","[LLM] Consider a Mediterranean diet rich in fruits, vegetables, and omega-3 fatty acids to help manage HbA1c and improve lipid profile, given the potential benefits for cardiovascular health and diabetes management",,,,"Error code: 413 - {'error': {'message': 'Request Entity Too Large', 'type': 'invalid_request_error', 'code': 'request_too_large'}}"
+final,"[1] I am 47 years old and my name is Carlos. I weigh 102 kg and I am 1.74 m tall.
+[2] My doctor told me last week that I have high blood pressure, around 155 over 95.
+[3] I was recently diagnosed with type 2 diabetes. My HbA1c came back at 8.3 percent.
+[4] I smoke about half a pack a day, maybe 10 cigarettes. I have been smoking for 20 years.
+[5] I usually sleep around 5 hours a night because of work stress. I feel exhausted all the time.
+[6] My LDL cholesterol was 162 mg/dL and my HDL was 36 mg/dL in my last blood test.
+[7] I do not exercise at all. I sit at a desk for 10 hours a day.
+[8] My abdominal circumference was measured at 108 cm at my last appointment.
+[9] Can you save my weight as 102 kg and my blood pressure as 155/95?
+[10] My Framingham score came out at 23 percent according to my cardiologist. He said it was high.
+[11] I have been feeling a lot of chest tightness after climbing stairs lately.
+[12] I would like a reminder to take my metformin 500mg every day at 8am starting tomorrow.
+[13] My doctor wants me to come back for a follow-up consultation on 15th July. Can you register that?
+[14] I am allergic to penicillin. Also I cannot eat gluten because of a diagnosed intolerance.
+[15] I prefer not to eat red meat. I follow a mostly plant-based diet during the week.
+[16] I lost 2 kg this month. My current weight is now 100 kg. Please update my weight.
+[17] I checked my blood pressure at the pharmacy today, it was 148 over 90. A bit better.
+[18] I slept 7 hours last night for the first time in months. I felt much better this morning.
+[19] I went for a 30 minute walk today. I want to start exercising daily.
+[20] My stress level has been very high lately, about 8 out of 10. Work has been overwhelming.",15,explore,Discuss LDL reduction with your doctor: LDL above 130 mg/dL,[explore] Discuss LDL reduction with your doctor: LDL above 130 mg/dL,5,excellent match,"The task is directly supported by the user's query, which states their LDL cholesterol level is 162 mg/dL, above the 130 mg/dL threshold. The task is actionable, specific, and clinically appropriate.",
+final,"[1] I am 47 years old and my name is Carlos. I weigh 102 kg and I am 1.74 m tall.
+[2] My doctor told me last week that I have high blood pressure, around 155 over 95.
+[3] I was recently diagnosed with type 2 diabetes. My HbA1c came back at 8.3 percent.
+[4] I smoke about half a pack a day, maybe 10 cigarettes. I have been smoking for 20 years.
+[5] I usually sleep around 5 hours a night because of work stress. I feel exhausted all the time.
+[6] My LDL cholesterol was 162 mg/dL and my HDL was 36 mg/dL in my last blood test.
+[7] I do not exercise at all. I sit at a desk for 10 hours a day.
+[8] My abdominal circumference was measured at 108 cm at my last appointment.
+[9] Can you save my weight as 102 kg and my blood pressure as 155/95?
+[10] My Framingham score came out at 23 percent according to my cardiologist. He said it was high.
+[11] I have been feeling a lot of chest tightness after climbing stairs lately.
+[12] I would like a reminder to take my metformin 500mg every day at 8am starting tomorrow.
+[13] My doctor wants me to come back for a follow-up consultation on 15th July. Can you register that?
+[14] I am allergic to penicillin. Also I cannot eat gluten because of a diagnosed intolerance.
+[15] I prefer not to eat red meat. I follow a mostly plant-based diet during the week.
+[16] I lost 2 kg this month. My current weight is now 100 kg. Please update my weight.
+[17] I checked my blood pressure at the pharmacy today, it was 148 over 90. A bit better.
+[18] I slept 7 hours last night for the first time in months. I felt much better this morning.
+[19] I went for a 30 minute walk today. I want to start exercising daily.
+[20] My stress level has been very high lately, about 8 out of 10. Work has been overwhelming.",16,explore,Increase physical activity to raise HDL: current HDL below 40 mg/dL,[explore] Increase physical activity to raise HDL: current HDL below 40 mg/dL,,,,"Error code: 413 - {'error': {'message': 'Request Entity Too Large', 'type': 'invalid_request_error', 'code': 'request_too_large'}}"
+final,"[1] I am 47 years old and my name is Carlos. I weigh 102 kg and I am 1.74 m tall.
+[2] My doctor told me last week that I have high blood pressure, around 155 over 95.
+[3] I was recently diagnosed with type 2 diabetes. My HbA1c came back at 8.3 percent.
+[4] I smoke about half a pack a day, maybe 10 cigarettes. I have been smoking for 20 years.
+[5] I usually sleep around 5 hours a night because of work stress. I feel exhausted all the time.
+[6] My LDL cholesterol was 162 mg/dL and my HDL was 36 mg/dL in my last blood test.
+[7] I do not exercise at all. I sit at a desk for 10 hours a day.
+[8] My abdominal circumference was measured at 108 cm at my last appointment.
+[9] Can you save my weight as 102 kg and my blood pressure as 155/95?
+[10] My Framingham score came out at 23 percent according to my cardiologist. He said it was high.
+[11] I have been feeling a lot of chest tightness after climbing stairs lately.
+[12] I would like a reminder to take my metformin 500mg every day at 8am starting tomorrow.
+[13] My doctor wants me to come back for a follow-up consultation on 15th July. Can you register that?
+[14] I am allergic to penicillin. Also I cannot eat gluten because of a diagnosed intolerance.
+[15] I prefer not to eat red meat. I follow a mostly plant-based diet during the week.
+[16] I lost 2 kg this month. My current weight is now 100 kg. Please update my weight.
+[17] I checked my blood pressure at the pharmacy today, it was 148 over 90. A bit better.
+[18] I slept 7 hours last night for the first time in months. I felt much better this morning.
+[19] I went for a 30 minute walk today. I want to start exercising daily.
+[20] My stress level has been very high lately, about 8 out of 10. Work has been overwhelming.",17,rule,Try to do more exercise to reduce weight,Try to do more exercise to reduce weight,,,,"Error code: 413 - {'error': {'message': 'Request Entity Too Large', 'type': 'invalid_request_error', 'code': 'request_too_large'}}"
+final,"[1] I am 47 years old and my name is Carlos. I weigh 102 kg and I am 1.74 m tall.
+[2] My doctor told me last week that I have high blood pressure, around 155 over 95.
+[3] I was recently diagnosed with type 2 diabetes. My HbA1c came back at 8.3 percent.
+[4] I smoke about half a pack a day, maybe 10 cigarettes. I have been smoking for 20 years.
+[5] I usually sleep around 5 hours a night because of work stress. I feel exhausted all the time.
+[6] My LDL cholesterol was 162 mg/dL and my HDL was 36 mg/dL in my last blood test.
+[7] I do not exercise at all. I sit at a desk for 10 hours a day.
+[8] My abdominal circumference was measured at 108 cm at my last appointment.
+[9] Can you save my weight as 102 kg and my blood pressure as 155/95?
+[10] My Framingham score came out at 23 percent according to my cardiologist. He said it was high.
+[11] I have been feeling a lot of chest tightness after climbing stairs lately.
+[12] I would like a reminder to take my metformin 500mg every day at 8am starting tomorrow.
+[13] My doctor wants me to come back for a follow-up consultation on 15th July. Can you register that?
+[14] I am allergic to penicillin. Also I cannot eat gluten because of a diagnosed intolerance.
+[15] I prefer not to eat red meat. I follow a mostly plant-based diet during the week.
+[16] I lost 2 kg this month. My current weight is now 100 kg. Please update my weight.
+[17] I checked my blood pressure at the pharmacy today, it was 148 over 90. A bit better.
+[18] I slept 7 hours last night for the first time in months. I felt much better this morning.
+[19] I went for a 30 minute walk today. I want to start exercising daily.
+[20] My stress level has been very high lately, about 8 out of 10. Work has been overwhelming.",18,llm,"[""Based on Carlos's profile (47 y, 102 kg, 1.74 m, hypertension 155/95 mmHg, type 2 diabetes with HbA1c 8.3 %, LDL 162 mg/dL, HDL 36 mg/dL, smoking 10 cigarettes/day, sleeping only 5 h/night, no exercise), the existing rule‑based tasks already cover sleep extension, hypertension evaluation, cardiovascular risk assessment, lifestyle counseling, diabetes screening, endocrinology review, smoking cessation, LDL reduction, HDL improvement, and exercise. A cross‑domain pattern that the rules miss is the combined impact of high refined‑carbohydrate intake on both poor glycemic control (HbA1c 8.3 %) and elevated blood pressure, compounded by chronic stress and inadequate sleep. To address this, a novel, specific, actionable task is: \""Reduce refined carbohydrate intake (e.g., sugary drinks, white bread, pastries, processed snacks) to help lower HbA1c and blood pressure, and start a daily 10‑minute mindfulness or meditation practice to lower stress, improve sleep quality, and further support blood‑pressure control.\""]","[LLM] [""Based on Carlos's profile (47 y, 102 kg, 1.74 m, hypertension 155/95 mmHg, type 2 diabetes with HbA1c 8.3 %, LDL 162 mg/dL, HDL 36 mg/dL, smoking 10 cigarettes/day, sleeping only 5 h/night, no exercise), the existing rule‑based tasks already cover sleep extension, hypertension evaluation, cardiovascular risk assessment, lifestyle counseling, diabetes screening, endocrinology review, smoking cessation, LDL reduction, HDL improvement, and exercise. A cross‑domain pattern that the rules miss is the combined impact of high refined‑carbohydrate intake on both poor glycemic control (HbA1c 8.3 %) and elevated blood pressure, compounded by chronic stress and inadequate sleep. To address this, a novel, specific, actionable task is: \""Reduce refined carbohydrate intake (e.g., sugary drinks, white bread, pastries, processed snacks) to help lower HbA1c and blood pressure, and start a daily 10‑minute mindfulness or meditation practice to lower stress, improve sleep quality, and further support blood‑pressure control.\""]",5,excellent match,"The task is directly responsive, well-grounded in the query, actionable, specific, and clearly appropriate. It addresses multiple aspects of Carlos's health profile in a clinically sensible manner.",
+final,"[1] I am 47 years old and my name is Carlos. I weigh 102 kg and I am 1.74 m tall.
+[2] My doctor told me last week that I have high blood pressure, around 155 over 95.
+[3] I was recently diagnosed with type 2 diabetes. My HbA1c came back at 8.3 percent.
+[4] I smoke about half a pack a day, maybe 10 cigarettes. I have been smoking for 20 years.
+[5] I usually sleep around 5 hours a night because of work stress. I feel exhausted all the time.
+[6] My LDL cholesterol was 162 mg/dL and my HDL was 36 mg/dL in my last blood test.
+[7] I do not exercise at all. I sit at a desk for 10 hours a day.
+[8] My abdominal circumference was measured at 108 cm at my last appointment.
+[9] Can you save my weight as 102 kg and my blood pressure as 155/95?
+[10] My Framingham score came out at 23 percent according to my cardiologist. He said it was high.
+[11] I have been feeling a lot of chest tightness after climbing stairs lately.
+[12] I would like a reminder to take my metformin 500mg every day at 8am starting tomorrow.
+[13] My doctor wants me to come back for a follow-up consultation on 15th July. Can you register that?
+[14] I am allergic to penicillin. Also I cannot eat gluten because of a diagnosed intolerance.
+[15] I prefer not to eat red meat. I follow a mostly plant-based diet during the week.
+[16] I lost 2 kg this month. My current weight is now 100 kg. Please update my weight.
+[17] I checked my blood pressure at the pharmacy today, it was 148 over 90. A bit better.
+[18] I slept 7 hours last night for the first time in months. I felt much better this morning.
+[19] I went for a 30 minute walk today. I want to start exercising daily.
+[20] My stress level has been very high lately, about 8 out of 10. Work has been overwhelming.",19,rule,Reduce abdominal circumference through diet and exercise: central obesity detected,Reduce abdominal circumference through diet and exercise: central obesity detected,4,good match,"The task directly targets the user's documented central obesity (abdominal circumference 108 cm) and proposes diet and exercise, which aligns with the user's sedentary lifestyle and health concerns.",
+final,"[1] I am 47 years old and my name is Carlos. I weigh 102 kg and I am 1.74 m tall.
+[2] My doctor told me last week that I have high blood pressure, around 155 over 95.
+[3] I was recently diagnosed with type 2 diabetes. My HbA1c came back at 8.3 percent.
+[4] I smoke about half a pack a day, maybe 10 cigarettes. I have been smoking for 20 years.
+[5] I usually sleep around 5 hours a night because of work stress. I feel exhausted all the time.
+[6] My LDL cholesterol was 162 mg/dL and my HDL was 36 mg/dL in my last blood test.
+[7] I do not exercise at all. I sit at a desk for 10 hours a day.
+[8] My abdominal circumference was measured at 108 cm at my last appointment.
+[9] Can you save my weight as 102 kg and my blood pressure as 155/95?
+[10] My Framingham score came out at 23 percent according to my cardiologist. He said it was high.
+[11] I have been feeling a lot of chest tightness after climbing stairs lately.
+[12] I would like a reminder to take my metformin 500mg every day at 8am starting tomorrow.
+[13] My doctor wants me to come back for a follow-up consultation on 15th July. Can you register that?
+[14] I am allergic to penicillin. Also I cannot eat gluten because of a diagnosed intolerance.
+[15] I prefer not to eat red meat. I follow a mostly plant-based diet during the week.
+[16] I lost 2 kg this month. My current weight is now 100 kg. Please update my weight.
+[17] I checked my blood pressure at the pharmacy today, it was 148 over 90. A bit better.
+[18] I slept 7 hours last night for the first time in months. I felt much better this morning.
+[19] I went for a 30 minute walk today. I want to start exercising daily.
+[20] My stress level has been very high lately, about 8 out of 10. Work has been overwhelming.",20,llm,"Reduce refined carbohydrate intake to help lower HbA1c and blood pressure, and start a daily 10‑minute mindfulness or meditation practice to lower stress, improve sleep quality, and further support blood‑pressure control.","[LLM] Reduce refined carbohydrate intake to help lower HbA1c and blood pressure, and start a daily 10‑minute mindfulness or meditation practice to lower stress, improve sleep quality, and further support blood‑pressure control.",,,,"Error code: 413 - {'error': {'message': 'Request Entity Too Large', 'type': 'invalid_request_error', 'code': 'request_too_large'}}"
+final,"[1] I am 47 years old and my name is Carlos. I weigh 102 kg and I am 1.74 m tall.
+[2] My doctor told me last week that I have high blood pressure, around 155 over 95.
+[3] I was recently diagnosed with type 2 diabetes. My HbA1c came back at 8.3 percent.
+[4] I smoke about half a pack a day, maybe 10 cigarettes. I have been smoking for 20 years.
+[5] I usually sleep around 5 hours a night because of work stress. I feel exhausted all the time.
+[6] My LDL cholesterol was 162 mg/dL and my HDL was 36 mg/dL in my last blood test.
+[7] I do not exercise at all. I sit at a desk for 10 hours a day.
+[8] My abdominal circumference was measured at 108 cm at my last appointment.
+[9] Can you save my weight as 102 kg and my blood pressure as 155/95?
+[10] My Framingham score came out at 23 percent according to my cardiologist. He said it was high.
+[11] I have been feeling a lot of chest tightness after climbing stairs lately.
+[12] I would like a reminder to take my metformin 500mg every day at 8am starting tomorrow.
+[13] My doctor wants me to come back for a follow-up consultation on 15th July. Can you register that?
+[14] I am allergic to penicillin. Also I cannot eat gluten because of a diagnosed intolerance.
+[15] I prefer not to eat red meat. I follow a mostly plant-based diet during the week.
+[16] I lost 2 kg this month. My current weight is now 100 kg. Please update my weight.
+[17] I checked my blood pressure at the pharmacy today, it was 148 over 90. A bit better.
+[18] I slept 7 hours last night for the first time in months. I felt much better this morning.
+[19] I went for a 30 minute walk today. I want to start exercising daily.
+[20] My stress level has been very high lately, about 8 out of 10. Work has been overwhelming.",21,llm,**Identified cross‑domain pattern that the rule‑based system misses**,[LLM] **Identified cross‑domain pattern that the rule‑based system misses**,2,weak match,"The task is generic and does not directly address any specific information provided in the user's query, making it a weak match.",
+final,"[1] I am 47 years old and my name is Carlos. I weigh 102 kg and I am 1.74 m tall.
+[2] My doctor told me last week that I have high blood pressure, around 155 over 95.
+[3] I was recently diagnosed with type 2 diabetes. My HbA1c came back at 8.3 percent.
+[4] I smoke about half a pack a day, maybe 10 cigarettes. I have been smoking for 20 years.
+[5] I usually sleep around 5 hours a night because of work stress. I feel exhausted all the time.
+[6] My LDL cholesterol was 162 mg/dL and my HDL was 36 mg/dL in my last blood test.
+[7] I do not exercise at all. I sit at a desk for 10 hours a day.
+[8] My abdominal circumference was measured at 108 cm at my last appointment.
+[9] Can you save my weight as 102 kg and my blood pressure as 155/95?
+[10] My Framingham score came out at 23 percent according to my cardiologist. He said it was high.
+[11] I have been feeling a lot of chest tightness after climbing stairs lately.
+[12] I would like a reminder to take my metformin 500mg every day at 8am starting tomorrow.
+[13] My doctor wants me to come back for a follow-up consultation on 15th July. Can you register that?
+[14] I am allergic to penicillin. Also I cannot eat gluten because of a diagnosed intolerance.
+[15] I prefer not to eat red meat. I follow a mostly plant-based diet during the week.
+[16] I lost 2 kg this month. My current weight is now 100 kg. Please update my weight.
+[17] I checked my blood pressure at the pharmacy today, it was 148 over 90. A bit better.
+[18] I slept 7 hours last night for the first time in months. I felt much better this morning.
+[19] I went for a 30 minute walk today. I want to start exercising daily.
+[20] My stress level has been very high lately, about 8 out of 10. Work has been overwhelming.",22,rule,Urgent cardiology review: Framingham 10-year cardiovascular risk ≥20%,Urgent cardiology review: Framingham 10-year cardiovascular risk ≥20%,,,,"Error code: 413 - {'error': {'message': 'Request Entity Too Large', 'type': 'invalid_request_error', 'code': 'request_too_large'}}"
+final,"[1] I am 47 years old and my name is Carlos. I weigh 102 kg and I am 1.74 m tall.
+[2] My doctor told me last week that I have high blood pressure, around 155 over 95.
+[3] I was recently diagnosed with type 2 diabetes. My HbA1c came back at 8.3 percent.
+[4] I smoke about half a pack a day, maybe 10 cigarettes. I have been smoking for 20 years.
+[5] I usually sleep around 5 hours a night because of work stress. I feel exhausted all the time.
+[6] My LDL cholesterol was 162 mg/dL and my HDL was 36 mg/dL in my last blood test.
+[7] I do not exercise at all. I sit at a desk for 10 hours a day.
+[8] My abdominal circumference was measured at 108 cm at my last appointment.
+[9] Can you save my weight as 102 kg and my blood pressure as 155/95?
+[10] My Framingham score came out at 23 percent according to my cardiologist. He said it was high.
+[11] I have been feeling a lot of chest tightness after climbing stairs lately.
+[12] I would like a reminder to take my metformin 500mg every day at 8am starting tomorrow.
+[13] My doctor wants me to come back for a follow-up consultation on 15th July. Can you register that?
+[14] I am allergic to penicillin. Also I cannot eat gluten because of a diagnosed intolerance.
+[15] I prefer not to eat red meat. I follow a mostly plant-based diet during the week.
+[16] I lost 2 kg this month. My current weight is now 100 kg. Please update my weight.
+[17] I checked my blood pressure at the pharmacy today, it was 148 over 90. A bit better.
+[18] I slept 7 hours last night for the first time in months. I felt much better this morning.
+[19] I went for a 30 minute walk today. I want to start exercising daily.
+[20] My stress level has been very high lately, about 8 out of 10. Work has been overwhelming.",23,llm,"Start a daily 10-minute mindfulness or meditation practice to reduce stress, improve sleep quality, and support blood-pressure control and diabetes management.","[LLM] Start a daily 10-minute mindfulness or meditation practice to reduce stress, improve sleep quality, and support blood-pressure control and diabetes management.",,,,"Error code: 413 - {'error': {'message': 'Request Entity Too Large', 'type': 'invalid_request_error', 'code': 'request_too_large'}}"
+final,"[1] I am 47 years old and my name is Carlos. I weigh 102 kg and I am 1.74 m tall.
+[2] My doctor told me last week that I have high blood pressure, around 155 over 95.
+[3] I was recently diagnosed with type 2 diabetes. My HbA1c came back at 8.3 percent.
+[4] I smoke about half a pack a day, maybe 10 cigarettes. I have been smoking for 20 years.
+[5] I usually sleep around 5 hours a night because of work stress. I feel exhausted all the time.
+[6] My LDL cholesterol was 162 mg/dL and my HDL was 36 mg/dL in my last blood test.
+[7] I do not exercise at all. I sit at a desk for 10 hours a day.
+[8] My abdominal circumference was measured at 108 cm at my last appointment.
+[9] Can you save my weight as 102 kg and my blood pressure as 155/95?
+[10] My Framingham score came out at 23 percent according to my cardiologist. He said it was high.
+[11] I have been feeling a lot of chest tightness after climbing stairs lately.
+[12] I would like a reminder to take my metformin 500mg every day at 8am starting tomorrow.
+[13] My doctor wants me to come back for a follow-up consultation on 15th July. Can you register that?
+[14] I am allergic to penicillin. Also I cannot eat gluten because of a diagnosed intolerance.
+[15] I prefer not to eat red meat. I follow a mostly plant-based diet during the week.
+[16] I lost 2 kg this month. My current weight is now 100 kg. Please update my weight.
+[17] I checked my blood pressure at the pharmacy today, it was 148 over 90. A bit better.
+[18] I slept 7 hours last night for the first time in months. I felt much better this morning.
+[19] I went for a 30 minute walk today. I want to start exercising daily.
+[20] My stress level has been very high lately, about 8 out of 10. Work has been overwhelming.",24,llm,"Reduce refined carbohydrate intake to help lower HbA1c and blood pressure, and start a daily 10‑minute mindfulness or meditation practice to lower stress, improve sleep quality, and further support blood‑pressure control.","[LLM] Reduce refined carbohydrate intake to help lower HbA1c and blood pressure, and start a daily 10‑minute mindfulness or meditation practice to lower stress, improve sleep quality, and further support blood‑pressure control.",,,,"Error code: 413 - {'error': {'message': 'Request Entity Too Large', 'type': 'invalid_request_error', 'code': 'request_too_large'}}"
+final,"[1] I am 47 years old and my name is Carlos. I weigh 102 kg and I am 1.74 m tall.
+[2] My doctor told me last week that I have high blood pressure, around 155 over 95.
+[3] I was recently diagnosed with type 2 diabetes. My HbA1c came back at 8.3 percent.
+[4] I smoke about half a pack a day, maybe 10 cigarettes. I have been smoking for 20 years.
+[5] I usually sleep around 5 hours a night because of work stress. I feel exhausted all the time.
+[6] My LDL cholesterol was 162 mg/dL and my HDL was 36 mg/dL in my last blood test.
+[7] I do not exercise at all. I sit at a desk for 10 hours a day.
+[8] My abdominal circumference was measured at 108 cm at my last appointment.
+[9] Can you save my weight as 102 kg and my blood pressure as 155/95?
+[10] My Framingham score came out at 23 percent according to my cardiologist. He said it was high.
+[11] I have been feeling a lot of chest tightness after climbing stairs lately.
+[12] I would like a reminder to take my metformin 500mg every day at 8am starting tomorrow.
+[13] My doctor wants me to come back for a follow-up consultation on 15th July. Can you register that?
+[14] I am allergic to penicillin. Also I cannot eat gluten because of a diagnosed intolerance.
+[15] I prefer not to eat red meat. I follow a mostly plant-based diet during the week.
+[16] I lost 2 kg this month. My current weight is now 100 kg. Please update my weight.
+[17] I checked my blood pressure at the pharmacy today, it was 148 over 90. A bit better.
+[18] I slept 7 hours last night for the first time in months. I felt much better this morning.
+[19] I went for a 30 minute walk today. I want to start exercising daily.
+[20] My stress level has been very high lately, about 8 out of 10. Work has been overwhelming.",25,llm,"Start a daily 10‑minute mindfulness practice to reduce stress and improve sleep quality, which can help lower HbA1c and blood pressure, and support overall cardiovascular health.","[LLM] Start a daily 10‑minute mindfulness practice to reduce stress and improve sleep quality, which can help lower HbA1c and blood pressure, and support overall cardiovascular health.",,,,"Error code: 413 - {'error': {'message': 'Request Entity Too Large', 'type': 'invalid_request_error', 'code': 'request_too_large'}}"
+final,"[1] I am 47 years old and my name is Carlos. I weigh 102 kg and I am 1.74 m tall.
+[2] My doctor told me last week that I have high blood pressure, around 155 over 95.
+[3] I was recently diagnosed with type 2 diabetes. My HbA1c came back at 8.3 percent.
+[4] I smoke about half a pack a day, maybe 10 cigarettes. I have been smoking for 20 years.
+[5] I usually sleep around 5 hours a night because of work stress. I feel exhausted all the time.
+[6] My LDL cholesterol was 162 mg/dL and my HDL was 36 mg/dL in my last blood test.
+[7] I do not exercise at all. I sit at a desk for 10 hours a day.
+[8] My abdominal circumference was measured at 108 cm at my last appointment.
+[9] Can you save my weight as 102 kg and my blood pressure as 155/95?
+[10] My Framingham score came out at 23 percent according to my cardiologist. He said it was high.
+[11] I have been feeling a lot of chest tightness after climbing stairs lately.
+[12] I would like a reminder to take my metformin 500mg every day at 8am starting tomorrow.
+[13] My doctor wants me to come back for a follow-up consultation on 15th July. Can you register that?
+[14] I am allergic to penicillin. Also I cannot eat gluten because of a diagnosed intolerance.
+[15] I prefer not to eat red meat. I follow a mostly plant-based diet during the week.
+[16] I lost 2 kg this month. My current weight is now 100 kg. Please update my weight.
+[17] I checked my blood pressure at the pharmacy today, it was 148 over 90. A bit better.
+[18] I slept 7 hours last night for the first time in months. I felt much better this morning.
+[19] I went for a 30 minute walk today. I want to start exercising daily.
+[20] My stress level has been very high lately, about 8 out of 10. Work has been overwhelming.",26,llm,Schedule a cardiopulmonary exercise stress test (treadmill ECG) to evaluate exertional chest tightness given high Framingham risk and uncontrolled hypertension.,[LLM] Schedule a cardiopulmonary exercise stress test (treadmill ECG) to evaluate exertional chest tightness given high Framingham risk and uncontrolled hypertension.,5,excellent match,"The task directly addresses the user's reported chest tightness on exertion, high Framingham risk, and uncontrolled hypertension, making it a specific, actionable, and clinically appropriate suggestion.",
+final,"[1] I am 47 years old and my name is Carlos. I weigh 102 kg and I am 1.74 m tall.
+[2] My doctor told me last week that I have high blood pressure, around 155 over 95.
+[3] I was recently diagnosed with type 2 diabetes. My HbA1c came back at 8.3 percent.
+[4] I smoke about half a pack a day, maybe 10 cigarettes. I have been smoking for 20 years.
+[5] I usually sleep around 5 hours a night because of work stress. I feel exhausted all the time.
+[6] My LDL cholesterol was 162 mg/dL and my HDL was 36 mg/dL in my last blood test.
+[7] I do not exercise at all. I sit at a desk for 10 hours a day.
+[8] My abdominal circumference was measured at 108 cm at my last appointment.
+[9] Can you save my weight as 102 kg and my blood pressure as 155/95?
+[10] My Framingham score came out at 23 percent according to my cardiologist. He said it was high.
+[11] I have been feeling a lot of chest tightness after climbing stairs lately.
+[12] I would like a reminder to take my metformin 500mg every day at 8am starting tomorrow.
+[13] My doctor wants me to come back for a follow-up consultation on 15th July. Can you register that?
+[14] I am allergic to penicillin. Also I cannot eat gluten because of a diagnosed intolerance.
+[15] I prefer not to eat red meat. I follow a mostly plant-based diet during the week.
+[16] I lost 2 kg this month. My current weight is now 100 kg. Please update my weight.
+[17] I checked my blood pressure at the pharmacy today, it was 148 over 90. A bit better.
+[18] I slept 7 hours last night for the first time in months. I felt much better this morning.
+[19] I went for a 30 minute walk today. I want to start exercising daily.
+[20] My stress level has been very high lately, about 8 out of 10. Work has been overwhelming.",27,llm,"Reduce refined carbohydrate intake to help lower HbA1c and blood pressure, and start a daily 10-minute mindfulness or meditation practice to lower stress, improve sleep quality, and further support blood-pressure control.","[LLM] Reduce refined carbohydrate intake to help lower HbA1c and blood pressure, and start a daily 10-minute mindfulness or meditation practice to lower stress, improve sleep quality, and further support blood-pressure control.",,,,"Error code: 413 - {'error': {'message': 'Request Entity Too Large', 'type': 'invalid_request_error', 'code': 'request_too_large'}}"
+final,"[1] I am 47 years old and my name is Carlos. I weigh 102 kg and I am 1.74 m tall.
+[2] My doctor told me last week that I have high blood pressure, around 155 over 95.
+[3] I was recently diagnosed with type 2 diabetes. My HbA1c came back at 8.3 percent.
+[4] I smoke about half a pack a day, maybe 10 cigarettes. I have been smoking for 20 years.
+[5] I usually sleep around 5 hours a night because of work stress. I feel exhausted all the time.
+[6] My LDL cholesterol was 162 mg/dL and my HDL was 36 mg/dL in my last blood test.
+[7] I do not exercise at all. I sit at a desk for 10 hours a day.
+[8] My abdominal circumference was measured at 108 cm at my last appointment.
+[9] Can you save my weight as 102 kg and my blood pressure as 155/95?
+[10] My Framingham score came out at 23 percent according to my cardiologist. He said it was high.
+[11] I have been feeling a lot of chest tightness after climbing stairs lately.
+[12] I would like a reminder to take my metformin 500mg every day at 8am starting tomorrow.
+[13] My doctor wants me to come back for a follow-up consultation on 15th July. Can you register that?
+[14] I am allergic to penicillin. Also I cannot eat gluten because of a diagnosed intolerance.
+[15] I prefer not to eat red meat. I follow a mostly plant-based diet during the week.
+[16] I lost 2 kg this month. My current weight is now 100 kg. Please update my weight.
+[17] I checked my blood pressure at the pharmacy today, it was 148 over 90. A bit better.
+[18] I slept 7 hours last night for the first time in months. I felt much better this morning.
+[19] I went for a 30 minute walk today. I want to start exercising daily.
+[20] My stress level has been very high lately, about 8 out of 10. Work has been overwhelming.",28,llm,**Cross‑domain pattern the rule‑based system misses**,[LLM] **Cross‑domain pattern the rule‑based system misses**,,,,"Error code: 413 - {'error': {'message': 'Request Entity Too Large', 'type': 'invalid_request_error', 'code': 'request_too_large'}}"
+final,"[1] I am 47 years old and my name is Carlos. I weigh 102 kg and I am 1.74 m tall.
+[2] My doctor told me last week that I have high blood pressure, around 155 over 95.
+[3] I was recently diagnosed with type 2 diabetes. My HbA1c came back at 8.3 percent.
+[4] I smoke about half a pack a day, maybe 10 cigarettes. I have been smoking for 20 years.
+[5] I usually sleep around 5 hours a night because of work stress. I feel exhausted all the time.
+[6] My LDL cholesterol was 162 mg/dL and my HDL was 36 mg/dL in my last blood test.
+[7] I do not exercise at all. I sit at a desk for 10 hours a day.
+[8] My abdominal circumference was measured at 108 cm at my last appointment.
+[9] Can you save my weight as 102 kg and my blood pressure as 155/95?
+[10] My Framingham score came out at 23 percent according to my cardiologist. He said it was high.
+[11] I have been feeling a lot of chest tightness after climbing stairs lately.
+[12] I would like a reminder to take my metformin 500mg every day at 8am starting tomorrow.
+[13] My doctor wants me to come back for a follow-up consultation on 15th July. Can you register that?
+[14] I am allergic to penicillin. Also I cannot eat gluten because of a diagnosed intolerance.
+[15] I prefer not to eat red meat. I follow a mostly plant-based diet during the week.
+[16] I lost 2 kg this month. My current weight is now 100 kg. Please update my weight.
+[17] I checked my blood pressure at the pharmacy today, it was 148 over 90. A bit better.
+[18] I slept 7 hours last night for the first time in months. I felt much better this morning.
+[19] I went for a 30 minute walk today. I want to start exercising daily.
+[20] My stress level has been very high lately, about 8 out of 10. Work has been overwhelming.",29,llm,"Reduce dietary sodium to less than 1500 mg per day and increase potassium‑rich foods (e.g., bananas, leafy greens, beans) to help lower blood pressure and further improve cardiovascular risk.","[LLM] Reduce dietary sodium to less than 1500 mg per day and increase potassium‑rich foods (e.g., bananas, leafy greens, beans) to help lower blood pressure and further improve cardiovascular risk.",5,excellent match,"The task directly addresses the user's high blood pressure and cardiovascular risk with specific, actionable dietary recommendations that are clinically appropriate and well-supported by the user's current query.",
+final,"[1] I am 47 years old and my name is Carlos. I weigh 102 kg and I am 1.74 m tall.
+[2] My doctor told me last week that I have high blood pressure, around 155 over 95.
+[3] I was recently diagnosed with type 2 diabetes. My HbA1c came back at 8.3 percent.
+[4] I smoke about half a pack a day, maybe 10 cigarettes. I have been smoking for 20 years.
+[5] I usually sleep around 5 hours a night because of work stress. I feel exhausted all the time.
+[6] My LDL cholesterol was 162 mg/dL and my HDL was 36 mg/dL in my last blood test.
+[7] I do not exercise at all. I sit at a desk for 10 hours a day.
+[8] My abdominal circumference was measured at 108 cm at my last appointment.
+[9] Can you save my weight as 102 kg and my blood pressure as 155/95?
+[10] My Framingham score came out at 23 percent according to my cardiologist. He said it was high.
+[11] I have been feeling a lot of chest tightness after climbing stairs lately.
+[12] I would like a reminder to take my metformin 500mg every day at 8am starting tomorrow.
+[13] My doctor wants me to come back for a follow-up consultation on 15th July. Can you register that?
+[14] I am allergic to penicillin. Also I cannot eat gluten because of a diagnosed intolerance.
+[15] I prefer not to eat red meat. I follow a mostly plant-based diet during the week.
+[16] I lost 2 kg this month. My current weight is now 100 kg. Please update my weight.
+[17] I checked my blood pressure at the pharmacy today, it was 148 over 90. A bit better.
+[18] I slept 7 hours last night for the first time in months. I felt much better this morning.
+[19] I went for a 30 minute walk today. I want to start exercising daily.
+[20] My stress level has been very high lately, about 8 out of 10. Work has been overwhelming.",30,llm,**Pattern the rule‑based system misses**,[LLM] **Pattern the rule‑based system misses**,1,very poor match,The task is irrelevant to the user's query and does not address any specific health concerns or information provided.,
+final,"[1] I am 47 years old and my name is Carlos. I weigh 102 kg and I am 1.74 m tall.
+[2] My doctor told me last week that I have high blood pressure, around 155 over 95.
+[3] I was recently diagnosed with type 2 diabetes. My HbA1c came back at 8.3 percent.
+[4] I smoke about half a pack a day, maybe 10 cigarettes. I have been smoking for 20 years.
+[5] I usually sleep around 5 hours a night because of work stress. I feel exhausted all the time.
+[6] My LDL cholesterol was 162 mg/dL and my HDL was 36 mg/dL in my last blood test.
+[7] I do not exercise at all. I sit at a desk for 10 hours a day.
+[8] My abdominal circumference was measured at 108 cm at my last appointment.
+[9] Can you save my weight as 102 kg and my blood pressure as 155/95?
+[10] My Framingham score came out at 23 percent according to my cardiologist. He said it was high.
+[11] I have been feeling a lot of chest tightness after climbing stairs lately.
+[12] I would like a reminder to take my metformin 500mg every day at 8am starting tomorrow.
+[13] My doctor wants me to come back for a follow-up consultation on 15th July. Can you register that?
+[14] I am allergic to penicillin. Also I cannot eat gluten because of a diagnosed intolerance.
+[15] I prefer not to eat red meat. I follow a mostly plant-based diet during the week.
+[16] I lost 2 kg this month. My current weight is now 100 kg. Please update my weight.
+[17] I checked my blood pressure at the pharmacy today, it was 148 over 90. A bit better.
+[18] I slept 7 hours last night for the first time in months. I felt much better this morning.
+[19] I went for a 30 minute walk today. I want to start exercising daily.
+[20] My stress level has been very high lately, about 8 out of 10. Work has been overwhelming.",31,llm,"Reduce daily intake of refined carbohydrates to help lower HbA1c and blood pressure, and incorporate a daily 10‑minute mindfulness practice to reduce stress and improve sleep quality","[LLM] Reduce daily intake of refined carbohydrates to help lower HbA1c and blood pressure, and incorporate a daily 10‑minute mindfulness practice to reduce stress and improve sleep quality",4,good match,"The task directly addresses the user's key health concerns—high HbA1c, elevated blood pressure, and high stress—by recommending reduced refined carbohydrate intake and a daily mindfulness practice, which are specific, actionable, and clinically appropriate.",

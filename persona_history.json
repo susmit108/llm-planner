@@ -1,1 +1,46 @@
-[]
+[
+    {
+        "Age": -1,
+        "Weight": -1,
+        "Average_Sleeping_Hours": -1,
+        "Has_Diabetes": -1,
+        "Has_High_Blood_Pressure": -1,
+        "Daily_Exercise": -1,
+        "Height_cm": -1,
+        "BMI": -1,
+        "Glycated_Hemoglobin": -1,
+        "Blood_Pressure_Systolic": -1,
+        "Blood_Pressure_Diastolic": -1,
+        "HDL": -1,
+        "LDL": -1,
+        "Framingham_Score": -1,
+        "Abdominal_Circumference_cm": -1,
+        "Stress_Level": -1,
+        "Diet_Quality": -1,
+        "Smokes": -1,
+        "Alcohol_Consumption": -1,
+        "__timestamp__": "2026-05-07T04:57:17"
+    },
+    {
+        "Age": -1,
+        "Weight": -1.0,
+        "Average_Sleeping_Hours": -1.0,
+        "Has_Diabetes": 1,
+        "Has_High_Blood_Pressure": 1,
+        "Daily_Exercise": -1,
+        "Height_cm": -1.0,
+        "BMI": -1.0,
+        "Glycated_Hemoglobin": 8.3,
+        "Blood_Pressure_Systolic": 148,
+        "Blood_Pressure_Diastolic": 90,
+        "HDL": -1.0,
+        "LDL": -1.0,
+        "Framingham_Score": 23.0,
+        "Abdominal_Circumference_cm": -1.0,
+        "Stress_Level": -1,
+        "Diet_Quality": -1,
+        "Smokes": -1,
+        "Alcohol_Consumption": -1,
+        "__timestamp__": "2026-05-07T05:01:47"
+    }
+]
